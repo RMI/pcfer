@@ -1,0 +1,20 @@
+- user makes a request for CI of a gallon of generic gasoline
+- API returns a global average in pact format (https://www.eia.gov/environment/emissions/co2_vol_mass.php)
+
+- user makes a request for CI of a gallon of gasoline from a specific region, tries to look it up, returns regional if possible, otherwise the global value
+
+
+EPA:
+70.66 kgCO2 Per Million Btu
+70.66 kgCO2 Per 0.29307107 MWh
+US: 241.10 kgCO2 per MWh
+
+IPCC (world in data):
+World, I think?: 249.48 kgCO2 per MWh
+
+conversion:
+1000000 btu = 0.29307107 MWh
+
+
+
+https://ourworldindata.org/grapher/carbon-dioxide-emissions-factor

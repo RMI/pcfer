@@ -1,0 +1,6 @@
+.git
+.dockerignore
+.env
+supnet/node_modules/
+supnet/vendor/bundle/
+supnet/tmp/
