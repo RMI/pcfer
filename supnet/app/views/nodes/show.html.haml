@@ -1,0 +1,8 @@
+%p{:style => "color: green"}= notice
+= render @node
+%div
+  = link_to "Edit this node", edit_node_path(@node)
+  |
+  \#{link_to "Back to nodes", nodes_path}
+  
+  \#{button_to "Destroy this node", @node, method: :delete}

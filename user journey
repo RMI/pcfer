@@ -1,20 +1,32 @@
+rails g migration enable_uuid
+
+
 - user makes a request for CI of a gallon of generic gasoline
-- API returns a global average in pact format (https://www.eia.gov/environment/emissions/co2_vol_mass.php)
+- API returns pact format
 
 - user makes a request for CI of a gallon of gasoline from a specific region, tries to look it up, returns regional if possible, otherwise the global value
 
-
 EPA:
+https://www.eia.gov/environment/emissions/co2_vol_mass.php
 70.66 kgCO2 Per Million Btu
 70.66 kgCO2 Per 0.29307107 MWh
-US: 241.10 kgCO2 per MWh
+===> US: 241.10 kgCO2 per MWh
 
 IPCC (world in data):
-World, I think?: 249.48 kgCO2 per MWh
+https://ourworldindata.org/grapher/carbon-dioxide-emissions-factor
+===> World, I think?: 249.48 kgCO2 per MWh
 
 conversion:
 1000000 btu = 0.29307107 MWh
 
-
-
 https://ourworldindata.org/grapher/carbon-dioxide-emissions-factor
+
+
+object (req) that records:
+
+rails generate scaffold jetFuel volume:integer unit:string category:string subcategory:string location:string vendor:string carbon_intensity:decimal produced_at:datetime
+
+rails generate scaffold node owner:string category:string subcategory:string url:string
+
+# POST /jet_fuel find carbon intensity and create a record of what's getting retunred
+Provides inputs to the model's 'create' method, which does the best it can to get carbon data, then persists the request and what it could do, then it returns PACT json (via API), or html (via HTTP)

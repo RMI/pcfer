@@ -1,0 +1,35 @@
+= form_with(model: jet_fuel) do |form|
+  - if jet_fuel.errors.any?
+    %div{:style => "color: red"}
+      %h2
+        = pluralize(jet_fuel.errors.count, "error")
+        prohibited this jet_fuel from being saved:
+      %ul
+        - jet_fuel.errors.each do |error|
+          %li= error.full_message
+  %div
+    = form.label :volume, style: "display: block"
+    = form.number_field :volume
+  %div
+    = form.label :unit, style: "display: block"
+    = form.text_field :unit
+  %div
+    = form.label :category, style: "display: block"
+    = form.text_field :category
+  %div
+    = form.label :subcategory, style: "display: block"
+    = form.text_field :subcategory
+  %div
+    = form.label :location, style: "display: block"
+    = form.text_field :location
+  %div
+    = form.label :vendor, style: "display: block"
+    = form.text_field :vendor
+  %div
+    = form.label :carbon_intensity, style: "display: block"
+    = form.text_field :carbon_intensity
+  %div
+    = form.label :produced_at, style: "display: block"
+    = form.datetime_field :produced_at
+  %div
+    = form.submit

@@ -1,0 +1,7 @@
+%h1 Editing node
+= render "form", node: @node
+%br/
+%div
+  = link_to "Show this node", @node
+  |
+  \#{link_to "Back to nodes", nodes_path}

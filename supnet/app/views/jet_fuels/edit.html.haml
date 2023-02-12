@@ -1,0 +1,7 @@
+%h1 Editing jet fuel
+= render "form", jet_fuel: @jet_fuel
+%br/
+%div
+  = link_to "Show this jet fuel", @jet_fuel
+  |
+  \#{link_to "Back to jet fuels", jet_fuels_path}

@@ -30,6 +30,12 @@ Then start app thusly:
 
 You should then be able to hit it at http://localhost:3000
 
+# shell into container:
+# open another terminal, cd into the repo directory
+# run `docker ps` to list running containers
+# shell into it with somthing like this (use the name of the running container you want to get into)
+docker exec -t -i supnet-supnet-1 /bin/bash
+
 
 # Need to totally start over?
 Stop the container(s) using the following command:

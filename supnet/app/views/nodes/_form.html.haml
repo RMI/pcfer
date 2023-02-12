@@ -1,0 +1,23 @@
+= form_with(model: node) do |form|
+  - if node.errors.any?
+    %div{:style => "color: red"}
+      %h2
+        = pluralize(node.errors.count, "error")
+        prohibited this node from being saved:
+      %ul
+        - node.errors.each do |error|
+          %li= error.full_message
+  %div
+    = form.label :owner, style: "display: block"
+    = form.text_field :owner
+  %div
+    = form.label :category, style: "display: block"
+    = form.text_field :category
+  %div
+    = form.label :subcategory, style: "display: block"
+    = form.text_field :subcategory
+  %div
+    = form.label :url, style: "display: block"
+    = form.text_field :url
+  %div
+    = form.submit

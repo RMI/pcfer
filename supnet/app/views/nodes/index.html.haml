@@ -1,0 +1,8 @@
+%p{:style => "color: green"}= notice
+%h1 Nodes
+#nodes
+  - @nodes.each do |node|
+    = render node
+    %p
+      = link_to "Show this node", node
+= link_to "New node", new_node_path

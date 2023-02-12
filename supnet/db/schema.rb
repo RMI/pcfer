@@ -10,8 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 0) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_11_223225) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "jet_fuels", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "volume"
+    t.string "unit"
+    t.string "category"
+    t.string "subcategory"
+    t.string "location"
+    t.string "vendor"
+    t.decimal "carbon_intensity"
+    t.datetime "produced_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "nodes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "owner"
+    t.string "category"
+    t.string "subcategory"
+    t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
 end
