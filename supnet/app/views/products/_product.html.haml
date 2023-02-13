@@ -1,0 +1,37 @@
+%div{:id => "#{dom_id product}"}
+  %div
+    %strong UUID:
+    =product.id
+
+    - product.attribute_names.collect do |attribute_name|
+      %div
+        %strong #{attribute_name.humanize}:
+        = product.public_send(attribute_name)
+
+  -# %div
+  -#   %strong Volume:
+  -#   = product.volume
+  -# %div
+  -#   %strong Unit:
+  -#   = product.unit
+  -# %div
+  -#   %strong Category:
+  -#   = product.category
+  -# %div
+  -#   %strong Subcategory:
+  -#   = product.subcategory
+  -# %div
+  -#   %strong Location:
+  -#   = product.location
+  -# %div
+  -#   %strong Vendor:
+  -#   = product.vendor
+  -# %div
+  -#   %strong Description:
+  -#   = product.description
+  -# %div
+  -#   %strong Carbon intensity:
+  -#   = product.carbon_intensity
+  -# %div
+  -#   %strong Produced at:
+  -#   = product.produced_at

@@ -1,10 +1,23 @@
-rails g migration enable_uuid
+App based on this tutorial:
+https://semaphoreci.com/community/tutorials/dockerizing-a-ruby-on-rails-application
+
+TODO:
+- rename 'volume' to 'amount'
+- add more granular location fields, match pact:
+- geographyRegionOrSubregion, geographyCountry, and geographyCountrySubdivision
 
 
-- user makes a request for CI of a gallon of generic gasoline
-- API returns pact format
+Scenarios:
 
-- user makes a request for CI of a gallon of gasoline from a specific region, tries to look it up, returns regional if possible, otherwise the global value
+- user makes a request for CI of a generic liter of kerosene
+- SupNet API returns pact format, sparse data, global average
+
+- user makes a request for CI of a liter of kerosene from a specific region
+- SupNet API returns sparse pact format, but higher quality data (regional average)
+
+- user makes a request for CI, and specifies a vendor, who has given them an API key to their SupNet node. SupNet API hites the node's API in the background, get richer and more accurate data.
+
+Emissions factors for kerosene:
 
 EPA:
 https://www.eia.gov/environment/emissions/co2_vol_mass.php
@@ -19,10 +32,8 @@ https://ourworldindata.org/grapher/carbon-dioxide-emissions-factor
 conversion:
 1000000 btu = 0.29307107 MWh
 
-https://ourworldindata.org/grapher/carbon-dioxide-emissions-factor
 
-
-object (req) that records:
+Notes:
 
 rails generate scaffold jetFuel volume:integer unit:string category:string subcategory:string location:string vendor:string carbon_intensity:decimal produced_at:datetime
 
@@ -30,3 +41,20 @@ rails generate scaffold node owner:string category:string subcategory:string url
 
 # POST /jet_fuel find carbon intensity and create a record of what's getting retunred
 Provides inputs to the model's 'create' method, which does the best it can to get carbon data, then persists the request and what it could do, then it returns PACT json (via API), or html (via HTTP)
+
+productCompanyName: Skittles
+companyName: Mars
+
+They're actually the same, one the legal name, I think, the other the brand name--like Mars and
+
+The company using this is the
+
+# Need to totally start over?
+Stop the container(s) using the following command:
+docker-compose down
+
+Delete all containers using the following command:
+docker rm -f $(docker ps -a -q)
+
+Delete all volumes using the following command:
+docker volume rm $(docker volume ls -q)

@@ -1,13 +1,21 @@
 %div{:id => "#{dom_id node}"}
-  %p
+  %div
+    %strong UUID:
+    =node.id
+
+
+  %div
     %strong Owner:
     = node.owner
-  %p
+  %div
     %strong Category:
     = node.category
-  %p
+  %div
     %strong Subcategory:
     = node.subcategory
-  %p
-    %strong Url:
+  %div
+    %strong URL:
     = node.url
+  %div
+    %strong API Key:
+    = node.api_key

@@ -1,0 +1,15 @@
+%p{:style => "color: green"}= notice
+
+%div{style: "margin: 0 0 20px 0;"}
+  = link_to "Back to products", products_path
+
+= render @product
+
+%br
+
+.btn-toolbar{role: "toolbar", "aria-label": "Toolbar with button groups"}
+  = link_to "Edit", edit_product_path(@product), class: "btn btn-primary"
+  &nbsp;
+  = link_to "View json", product_path(@product, format: :json), class: "btn btn-primary"
+  &nbsp;
+  = button_to "Destroy this product", @product, method: :delete, class: "btn btn-danger"

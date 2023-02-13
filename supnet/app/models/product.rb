@@ -1,5 +1,5 @@
-class JetFuel < ApplicationRecord
-  validates_presence_of :volume, :unit
+class Product < ApplicationRecord
+  # validates_presence_of :volume, :unit
 
   # eventually we'll want a more dynamic way to get this,
   # a lookup or api or whatever, since it's subject to change.
@@ -11,10 +11,10 @@ class JetFuel < ApplicationRecord
     # Next rev: do this with http--an out and back--so it's proper API-like
     # there must be a more elegant way to do this
     if self.category.present? && self.vendor.present?
-      @possible_nodes << Node.where("LOWER(category) = 'jet fuel' AND LOWER(owner) = ?", self.vendor.downcase).to_a
+      @possible_nodes << Node.where("LOWER(category) = 'product' AND LOWER(owner) = ?", self.vendor.downcase).to_a
       logger.debug "--------> @possible_nodes2: #{@possible_nodes.flatten.inspect}"
     elsif self.category.present?
-      @possible_nodes << Node.where("LOWER(category) = 'jet fuel'")
+      @possible_nodes << Node.where("LOWER(category) = 'product'")
       logger.debug "--------> @possible_nodes3: #{@possible_nodes.flatten.inspect}"
     end
 

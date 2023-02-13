@@ -5,6 +5,7 @@ class CreateNodes < ActiveRecord::Migration[7.0]
       t.string :category
       t.string :subcategory
       t.string :url
+      t.string :api_key
 
       t.timestamps
     end

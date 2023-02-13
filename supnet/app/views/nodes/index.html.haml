@@ -1,8 +1,16 @@
 %p{:style => "color: green"}= notice
+
 %h1 Nodes
-#nodes
+
+= link_to "New node", new_node_path, class: "btn btn-primary"
+
+%br
+%br
+%p
+  APIs to obtain PCF data directly.
+
+%table{id: "nodes", class: "table table-hover"}
   - @nodes.each do |node|
-    = render node
-    %p
-      = link_to "Show this node", node
-= link_to "New node", new_node_path
+    %tr
+      %td
+        = link_to "#{node.owner}, #{node.category}, on #{node.created_at}", node_path(node)

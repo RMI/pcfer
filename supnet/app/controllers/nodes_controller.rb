@@ -65,6 +65,6 @@ class NodesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def node_params
-      params.require(:node).permit(:owner, :category, :subcategory, :url)
+      params.require(:node).permit(:owner, :category, :subcategory, :url, :api_key)
     end
 end

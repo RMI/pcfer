@@ -7,17 +7,22 @@
       %ul
         - node.errors.each do |error|
           %li= error.full_message
-  %div
+  .form-group
     = form.label :owner, style: "display: block"
-    = form.text_field :owner
-  %div
+    = form.text_field :owner, class: "form-control"
+  .form-group
     = form.label :category, style: "display: block"
-    = form.text_field :category
-  %div
+    = form.text_field :category, class: "form-control"
+  .form-group
     = form.label :subcategory, style: "display: block"
-    = form.text_field :subcategory
-  %div
+    = form.text_field :subcategory, class: "form-control"
+  .form-group
     = form.label :url, style: "display: block"
-    = form.text_field :url
-  %div
-    = form.submit
+    = form.text_field :url, class: "form-control"
+  .form-group
+    = form.label :api_key, style: "display: block"
+    = form.text_field :api_key, class: "form-control"
+  .form-group
+    %br/
+    %button{type: "submit", class: "btn btn-primary"}
+      Create node

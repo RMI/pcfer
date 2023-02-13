@@ -1,0 +1,12 @@
+%p{:style => "color: green"}= notice
+
+%h1 Products
+
+= link_to "New product request", new_product_path, class: "btn btn-primary"
+
+%table{id: "products", class: "table table-hover"}
+  - @products.each do |product|
+    %tr
+      %td
+        = link_to product.id, product_path(product)
+        -# = link_to "#{product.volume} #{product.unit}, on #{product.created_at}", product_path(product)
