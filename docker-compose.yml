@@ -7,17 +7,8 @@ services:
     environment:
       POSTGRES_USER: supnet
       POSTGRES_PASSWORD: test_db_password
-    ports: 
-      - '5432:5432'
     volumes:
       - supnet-postgres:/var/lib/postgresql/data
-
-  # redis:
-  #   image: redis:7.0
-  #   ports:
-  #     - '6379:6379'
-  #   volumes:
-  #     - supnet-redis:/var/lib/redis/data
 
   supnet:
     build:
@@ -26,31 +17,10 @@ services:
       - ./supnet:/opt/app
     links:
       - postgres
-      # - redis
     ports:
       - '3000:3000'
     env_file:
       - .env
 
-  # sidekiq:
-  #   build:
-  #     context: .
-  #   command: bundle exec sidekiq 
-  #   links:
-  #     - postgres
-  #     - redis
-  #   env_file:
-  #     - .env
-
-  # nginx:
-  #   build:
-  #     context: .
-  #     dockerfile: ./Dockerfile.nginx
-  #   links:
-  #     - supnet
-  #   ports:
-  #     - '8020:8020'
-
 volumes:
   supnet-postgres:
-  # supnet-redis:
