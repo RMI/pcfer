@@ -1,3 +1,6 @@
+:css
+  sup {color: red;}
+
 = form_with(model: product) do |form|
   - if product.errors.any?
     %div{:style => "color: red"}
@@ -7,9 +10,23 @@
       %ul
         - product.errors.each do |error|
           %li= error.full_message
+
+          precedingPfIds
+
   .form-group
-    = form.label :status
-    = form.text_field :status, class: "form-control"
+    = form.label :spec_version
+    %div
+      2.0.0
+
+  .form-group
+    = form.label :preceding_pf_ids, "Preceding product footprint identifiers"
+    = form.text_field :preceding_pf_ids, class: "form-control"
+  .form-group
+    = form.label :version
+    = form.text_field :version, class: "form-control"
+  .form-group
+    = form.label :status, "Status <sup>*</sup>".html_safe
+    = form.select :status, ["Active", "Deprecated"], {include_blank: '-- Select One --'}, {class: "form-select" , required: true}
   .form-group
     = form.label :status_comment
     = form.text_field :status_comment, class: "form-control"
@@ -20,74 +37,75 @@
     = form.label :validity_period_end
     = form.datetime_field :validity_period_end, class: "form-control"
   .form-group
-    = form.label :company_name
-    = form.text_field :company_name, class: "form-control"
+    = form.label :company_name, "Company name <sup>*</sup>".html_safe
+    = form.text_field :company_name, class: "form-control", required: true
   .form-group
-    = form.label :company_ids
-    = form.text_field :company_ids, class: "form-control"
+    = form.label :company_ids, "Company IDs <sup>*</sup>".html_safe
+    = form.text_field :company_ids, class: "form-control", required: true
   .form-group
-    = form.label :product_description
-    = form.text_field :product_description, class: "form-control"
+    = form.label :product_description, "Product description <sup>*</sup>".html_safe
+    = form.text_field :product_description, class: "form-control", required: true
   .form-group
-    = form.label :product_ids
-    = form.text_field :product_ids, class: "form-control"
+    = form.label :product_ids, "Product IDs <sup>*</sup>".html_safe
+    = form.text_field :product_ids, class: "form-control", required: true
   .form-group
-    = form.label :product_category_cpc
-    = form.text_field :product_category_cpc, class: "form-control"
+    = form.label :product_category_cpc, "Product category CPC <sup>*</sup>".html_safe
+    = form.text_field :product_category_cpc, class: "form-control", required: true
 
   .form-group
-    = form.label :product_name_company
-    = form.text_field :product_name_company, class: "form-control"
+    = form.label :product_name_company, "Product name company <sup>*</sup>".html_safe
+    = form.text_field :product_name_company, class: "form-control", required: true
   .form-group
     = form.label :comment
     = form.text_field :comment, class: "form-control"
   .form-group
-    = form.label :pcf_declared_unit
-    = form.text_field :pcf_declared_unit, class: "form-control"
+    = form.label :pcf_declared_unit, "PCF declared unit <sup>*</sup>".html_safe
+    -# = form.text_field :pcf_declared_unit, class: "form-control"
+    = form.select :pcf_declared_unit, ["liter", "kilogram", "cubic meter", "kilowatt hour", "megajoule", "ton kilometer", "square meter"], {include_blank: '-- Select One --'}, {class: "form-select" , required: true}
   .form-group
-    = form.label :pcf_unitary_product_amount
-    = form.text_field :pcf_unitary_product_amount, class: "form-control"
+    = form.label :pcf_unitary_product_amount, "PCF unitary product amount <sup>*</sup>".html_safe
+    = form.number_field :pcf_unitary_product_amount, class: "form-control"
   .form-group
     = form.label :pcf_pcf_excluding_biogenic
-    = form.text_field :pcf_pcf_excluding_biogenic, class: "form-control"
+    = form.number_field :pcf_pcf_excluding_biogenic, class: "form-control"
   .form-group
     = form.label :pcf_pcf_including_biogenic
-    = form.text_field :pcf_pcf_including_biogenic, class: "form-control"
+    = form.number_field :pcf_pcf_including_biogenic, class: "form-control"
   .form-group
-    = form.label :pcf_fossil_ghg_emissions
-    = form.text_field :pcf_fossil_ghg_emissions, class: "form-control"
+    = form.label :pcf_fossil_ghg_emissions, "PCF fossil GHG emissions <sup>*</sup>".html_safe
+    = form.number_field :pcf_fossil_ghg_emissions, class: "form-control", required: true
 
   .form-group
-    = form.label :pcf_fossil_carbon_content
-    = form.text_field :pcf_fossil_carbon_content, class: "form-control"
+    = form.label :pcf_fossil_carbon_content, "PCF fossil carbon content <sup>*</sup>".html_safe
+    = form.number_field :pcf_fossil_carbon_content, class: "form-control", required: true
   .form-group
-    = form.label :pcf_biogenic_carbon_content
-    = form.text_field :pcf_biogenic_carbon_content, class: "form-control"
+    = form.label :pcf_biogenic_carbon_content, "PCF biogenic carbon content <sup>*</sup>".html_safe
+    = form.number_field :pcf_biogenic_carbon_content, class: "form-control", required: true
   .form-group
     = form.label :pcf_d_luc_ghg_emissions
-    = form.text_field :pcf_d_luc_ghg_emissions, class: "form-control"
+    = form.number_field :pcf_d_luc_ghg_emissions, class: "form-control"
   .form-group
     = form.label :pcf_land_management_ghg_emissions
-    = form.text_field :pcf_land_management_ghg_emissions, class: "form-control"
+    = form.number_field :pcf_land_management_ghg_emissions, class: "form-control"
   .form-group
     = form.label :pcf_other_biogenic_ghg_emissions
-    = form.text_field :pcf_other_biogenic_ghg_emissions, class: "form-control"
+    = form.number_field :pcf_other_biogenic_ghg_emissions, class: "form-control"
   .form-group
     = form.label :pcf_i_luc_ghg_emissions
-    = form.text_field :pcf_i_luc_ghg_emissions, class: "form-control"
+    = form.number_field :pcf_i_luc_ghg_emissions, class: "form-control"
   .form-group
     = form.label :pcf_biogenic_carbon_withdrawal
-    = form.text_field :pcf_biogenic_carbon_withdrawal, class: "form-control"
+    = form.number_field :pcf_biogenic_carbon_withdrawal, class: "form-control"
   .form-group
     = form.label :pcf_aircraft_ghg_emissions
-    = form.text_field :pcf_aircraft_ghg_emissions, class: "form-control"
+    = form.number_field :pcf_aircraft_ghg_emissions, class: "form-control"
   .form-group
-    = form.label :pcf_characterization_factors
-    = form.text_field :pcf_characterization_factors, class: "form-control"
+    = form.label :pcf_characterization_factors, "PCF characterization factors <sup>*</sup>".html_safe
+    = form.select :pcf_characterization_factors, ["AR5", "AR6"], {include_blank: '-- Select One --'}, {class: "form-select" , required: true}
   .form-group
-    = form.label :pcf_cross_sectoral_standards_used
-    = form.text_field :pcf_cross_sectoral_standards_used, class: "form-control"
-
+    = form.label :pcf_cross_sectoral_standards_used, "PCF cross sectoral standards used <sup>*</sup>".html_safe
+    -# = form.text_field :pcf_cross_sectoral_standards_used, class: "form-control"
+    = select_tag 'product[pcf_cross_sectoral_standards_used]', options_for_select([ "GHG Protocol Product standard", "ISO Standard 14067", "ISO Standard 14044" ]), {multiple: true, class: "form-select"}
   .form-group
     = form.label :pcf_product_or_sector_specific_rules
     = form.text_field :pcf_product_or_sector_specific_rules, class: "form-control"
@@ -98,11 +116,11 @@
     = form.label :pcf_boundary_processes_description
     = form.text_field :pcf_boundary_processes_description, class: "form-control"
   .form-group
-    = form.label :pcf_reference_period_start
-    = form.datetime_field :pcf_reference_period_start, class: "form-control"
+    = form.label :pcf_reference_period_start, "PCF reference period start <sup>*</sup>".html_safe
+    = form.datetime_field :pcf_reference_period_start, class: "form-control", required: true
   .form-group
-    = form.label :pcf_reference_period_end
-    = form.datetime_field :pcf_reference_period_end, class: "form-control"
+    = form.label :pcf_reference_period_end, "PCF reference period end <sup>*</sup>".html_safe
+    = form.datetime_field :pcf_reference_period_end, class: "form-control", required: true
   .form-group
     = form.label :pcf_geography_country_subdivision
     = form.text_field :pcf_geography_country_subdivision, class: "form-control"
@@ -116,14 +134,14 @@
     = form.label :pcf_secondary_emission_factor_sources
     = form.text_field :pcf_secondary_emission_factor_sources, class: "form-control"
   .form-group
-    = form.label :pcf_exempted_emissions_percent
-    = form.text_field :pcf_exempted_emissions_percent, class: "form-control"
+    = form.label :pcf_exempted_emissions_percent, "PCF exempted emissions percent <sup>*</sup>".html_safe
+    = form.text_field :pcf_exempted_emissions_percent, class: "form-control", required: true
   .form-group
-    = form.label :pcf_exempted_emissions_description
-    = form.text_field :pcf_exempted_emissions_description, class: "form-control"
+    = form.label :pcf_exempted_emissions_description, "PCF exempted emissions description <sup>*</sup>".html_safe
+    = form.text_field :pcf_exempted_emissions_description, class: "form-control", required: true
   .form-group
-    = form.label :pcf_packaging_emissions_included
-    = form.text_field :pcf_packaging_emissions_included, class: "form-control"
+    = form.label :pcf_packaging_emissions_included, "PCF packaging emissions included <sup>*</sup>".html_safe
+    = form.select :pcf_packaging_emissions_included, ["true", "false"], {include_blank: '-- Select One --'}, {class: "form-select" , required: true}
   .form-group
     = form.label :pcf_packaging_ghg_emissions
     = form.text_field :pcf_packaging_ghg_emissions, class: "form-control"
@@ -157,18 +175,19 @@
   .form-group
     = form.label :pcf_assurance_coverage
     = form.text_field :pcf_assurance_coverage, class: "form-control"
+    = form.select :pcf_assurance_level, ["corporate level", "product line", "PCF system", "product level"], {include_blank: true}, {class: "form-select"}
   .form-group
     = form.label :pcf_assurance_level
-    = form.text_field :pcf_assurance_level, class: "form-control"
+    = form.select :pcf_assurance_level, ["limited", "reasonable"], {include_blank: true}, {class: "form-select"}
   .form-group
     = form.label :pcf_assurance_boundary
-    = form.text_field :pcf_assurance_boundary, class: "form-control"
+    = form.select :pcf_assurance_boundary, ["Gate-to-Gate", "Cradle-to-Gate"], {include_blank: true}, {class: "form-select"}
   .form-group
     = form.label :pcf_assurance_provider_name
     = form.text_field :pcf_assurance_provider_name, class: "form-control"
   .form-group
     = form.label :pcf_assurance_completed_at
-    = form.text_field :pcf_assurance_completed_at, class: "form-control"
+    = form.datetime_field :pcf_assurance_completed_at, class: "form-control"
   .form-group
     = form.label :pcf_assurance_standard_name
     = form.text_field :pcf_assurance_standard_name, class: "form-control"
