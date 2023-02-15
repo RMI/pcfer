@@ -1,9 +1,7 @@
 class Node < ApplicationRecord
-  validates_presence_of :owner, :category, :url
+  validates_presence_of :owner, :url
 
-  def get_carbon_intensity
-    # irl this would hit the API and get the value--and it will soon! but for now...
-    "200.00 kgCO2 per MWh"
-  end
+  has_many :sources
+  has_many :products, through: :sources
 
 end

@@ -1,25 +1,11 @@
 class Product < ApplicationRecord
-  # validates_presence_of :volume, :unit
+  validates_presence_of :status, :company_name, :company_ids, :product_description, :product_ids, :product_category_cpc, :product_name_company, :pcf_declared_unit, :pcf_unitary_product_amount, :pcf_fossil_ghg_emissions
 
-  # eventually we'll want a more dynamic way to get this,
-  # a lookup or api or whatever, since it's subject to change.
-  GLOBAL_CARBON_INTENSITY = "249.48 kgCO2 per MWh"
+  has_many :sources
+  has_many :nodes, through: :sources
 
-  def get_nodes
-    @possible_nodes = []
+  attribute :version, :integer, default: "1"
 
-    # Next rev: do this with http--an out and back--so it's proper API-like
-    # there must be a more elegant way to do this
-    if self.category.present? && self.vendor.present?
-      @possible_nodes << Node.where("LOWER(category) = 'product' AND LOWER(owner) = ?", self.vendor.downcase).to_a
-      logger.debug "--------> @possible_nodes2: #{@possible_nodes.flatten.inspect}"
-    elsif self.category.present?
-      @possible_nodes << Node.where("LOWER(category) = 'product'")
-      logger.debug "--------> @possible_nodes3: #{@possible_nodes.flatten.inspect}"
-    end
-
-    logger.debug "--------> @possible_nodes4: #{@possible_nodes.flatten.inspect}"
-    @possible_nodes.flatten
-  end
+  REGIONS = ["Africa", "Americas", "Asia", "Europe", "Oceania", "Australia and New Zealand", "Central Asia", "Eastern Asia", "Eastern Europe", "Latin America and the Caribbean", "Melanesia", "Micronesia", "Northern Africa", "Northern America", "Northern Europe", "Polynesia", "South-eastern Asia", "Southern Asia", "Southern Europe", "Sub-Saharan Africa", "Western Asia", "Western Europe"]
 
 end
