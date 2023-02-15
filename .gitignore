@@ -1,5 +1,7 @@
 # from: https://github.com/github/gitignore/blob/main/Rails.gitignore
 
+.DS_Store
+
 *.rbc
 capybara-*.html
 .rspec
