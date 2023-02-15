@@ -3,50 +3,53 @@ class ProductsController < ApplicationController
 
   # GET /products or /products.json
   def index
+    @title = "PCFs"
     @products = Product.all
   end
 
   # GET /products/1 or /products/1.json
   def show
+    @title = "PCF"
     respond_to do |format|
       format.html { render :show }
-      format.json { render "products/pact" }
+      format.json do
+        @top={}
+        @pcf={}
+        @dqi={}
+        @assurance={}
+
+        # go through fields
+        @product.attributes.each do |attribute|
+          if attribute[0].include?("pcf_dqi_")
+            @dqi[attribute[0]] = attribute[1]
+          elsif attribute[0].include?("pcf_assurance_")
+            @assurance[attribute[0]] = attribute[1]
+          elsif attribute[0].include?("pcf_")
+            @pcf[attribute[0]] = attribute[1]
+          else
+            @top[attribute[0]] = attribute[1]
+          end
+        end
+
+        render "products/pact"
+      end
     end
   end
 
   # GET /products/new
   def new
+    @title = "New PCF"
     @product = Product.new
   end
 
   # GET /products/1/edit
   def edit
+    @title = "Edit PCF"
   end
 
   # POST /products or /products.json
   def create
     @product = Product.new(product_params)
-
-    # if @product.get_nodes.present?
-
-    #   # WHERE THE MAGIC WILL HAPPEN.
-    #   # The point of this demo is to show how you can request a PCF, and
-    #   # it will either do a best-guess estimate (global or local averages), or
-    #   # if it's aware of a node that will let it get either a better estimate
-    #   # or primary data, it will hit the associated API and return *that*,
-    #   # instead.
-
-    #   # iterate through nodes and look for whatever you're looking for--probably carbon intensity
-    #   # But for now, just grab value from first node
-    #   @product.carbon_intensity = @product.get_nodes.first.get_carbon_intensity
-
-    # # Do some geo stuff to see if the location is in the US. But for now...
-    # elsif @product.location.present? && @product.location = "US"
-    #   @product.carbon_intensity = "241.10 kgCO2 per MWh"
-    # else
-    #   # use global value
-    #   @product.carbon_intensity = Product::GLOBAL_CARBON_INTENSITY
-    # end
 
     respond_to do |format|
       if @product.save

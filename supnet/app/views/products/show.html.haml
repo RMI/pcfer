@@ -1,7 +1,4 @@
-%p{:style => "color: green"}= notice
-
-%div{style: "margin: 0 0 20px 0;"}
-  = link_to "Back to products", products_path
+= render "shared/product_nav"
 
 = render @product
 

@@ -10,12 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_11_223225) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_15_052332) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "nodes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "owner"
+    t.string "name"
+    t.text "description"
     t.string "category"
     t.string "subcategory"
     t.string "url"
@@ -28,12 +31,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_11_223225) do
     t.string "spec_version"
     t.string "preceding_pf_ids"
     t.integer "version"
-    t.string "created"
-    t.string "updated"
+    t.datetime "created"
+    t.datetime "updated"
     t.string "status"
     t.string "status_comment"
-    t.string "validity_period_start"
-    t.string "validity_period_end"
+    t.datetime "validity_period_start"
+    t.datetime "validity_period_end"
     t.string "company_name"
     t.string "company_ids"
     t.string "product_description"
@@ -42,25 +45,25 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_11_223225) do
     t.string "product_name_company"
     t.string "comment"
     t.string "pcf_declared_unit"
-    t.string "pcf_unitary_product_amount"
-    t.string "pcf_pcf_excluding_biogenic"
-    t.string "pcf_pcf_including_biogenic"
-    t.string "pcf_fossil_ghg_emissions"
-    t.string "pcf_fossil_carbon_content"
-    t.string "pcf_biogenic_carbon_content"
-    t.string "pcf_d_luc_ghg_emissions"
-    t.string "pcf_land_management_ghg_emissions"
-    t.string "pcf_other_biogenic_ghg_emissions"
-    t.string "pcf_i_luc_ghg_emissions"
-    t.string "pcf_biogenic_carbon_withdrawal"
-    t.string "pcf_aircraft_ghg_emissions"
+    t.decimal "pcf_unitary_product_amount"
+    t.decimal "pcf_pcf_excluding_biogenic"
+    t.decimal "pcf_pcf_including_biogenic"
+    t.decimal "pcf_fossil_ghg_emissions"
+    t.decimal "pcf_fossil_carbon_content"
+    t.decimal "pcf_biogenic_carbon_content"
+    t.decimal "pcf_d_luc_ghg_emissions"
+    t.decimal "pcf_land_management_ghg_emissions"
+    t.decimal "pcf_other_biogenic_ghg_emissions"
+    t.decimal "pcf_i_luc_ghg_emissions"
+    t.decimal "pcf_biogenic_carbon_withdrawal"
+    t.decimal "pcf_aircraft_ghg_emissions"
     t.string "pcf_characterization_factors"
     t.string "pcf_cross_sectoral_standards_used"
     t.string "pcf_product_or_sector_specific_rules"
     t.string "pcf_biogenic_accounting_methodology"
     t.string "pcf_boundary_processes_description"
-    t.string "pcf_reference_period_start"
-    t.string "pcf_reference_period_end"
+    t.datetime "pcf_reference_period_start"
+    t.datetime "pcf_reference_period_end"
     t.string "pcf_geography_country_subdivision"
     t.string "pcf_geography_country"
     t.string "pcf_geography_region_or_subregion"
@@ -90,4 +93,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_11_223225) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "sources", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "product_id", null: false
+    t.uuid "node_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["node_id"], name: "index_sources_on_node_id"
+    t.index ["product_id"], name: "index_sources_on_product_id"
+  end
+
+  add_foreign_key "sources", "nodes"
+  add_foreign_key "sources", "products"
 end

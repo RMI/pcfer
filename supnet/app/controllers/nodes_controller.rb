@@ -3,20 +3,24 @@ class NodesController < ApplicationController
 
   # GET /nodes or /nodes.json
   def index
+    @title = "Node"
     @nodes = Node.all
   end
 
   # GET /nodes/1 or /nodes/1.json
   def show
+    @title = "Node"
   end
 
   # GET /nodes/new
   def new
+    @title = "New node"
     @node = Node.new
   end
 
   # GET /nodes/1/edit
   def edit
+    @title = "Edit node"
   end
 
   # POST /nodes or /nodes.json
@@ -65,6 +69,6 @@ class NodesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def node_params
-      params.require(:node).permit(:owner, :category, :subcategory, :url, :api_key)
+      params.require(:node).permit(:owner, :name, :description, :category, :subcategory, :url, :api_key)
     end
 end

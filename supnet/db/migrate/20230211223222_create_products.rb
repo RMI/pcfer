@@ -4,12 +4,12 @@ class CreateProducts < ActiveRecord::Migration[7.0]
       t.string :spec_version
       t.string :preceding_pf_ids
       t.integer :version
-      t.string :created
-      t.string :updated
+      t.datetime :created
+      t.datetime :updated
       t.string :status
       t.string :status_comment
-      t.string :validity_period_start
-      t.string :validity_period_end
+      t.datetime :validity_period_start
+      t.datetime :validity_period_end
       t.string :company_name
       t.string :company_ids
       t.string :product_description
@@ -18,25 +18,25 @@ class CreateProducts < ActiveRecord::Migration[7.0]
       t.string :product_name_company
       t.string :comment
       t.string :pcf_declared_unit
-      t.string :pcf_unitary_product_amount
-      t.string :pcf_pcf_excluding_biogenic
-      t.string :pcf_pcf_including_biogenic
-      t.string :pcf_fossil_ghg_emissions
-      t.string :pcf_fossil_carbon_content
-      t.string :pcf_biogenic_carbon_content
-      t.string :pcf_d_luc_ghg_emissions
-      t.string :pcf_land_management_ghg_emissions
-      t.string :pcf_other_biogenic_ghg_emissions
-      t.string :pcf_i_luc_ghg_emissions
-      t.string :pcf_biogenic_carbon_withdrawal
-      t.string :pcf_aircraft_ghg_emissions
+      t.decimal :pcf_unitary_product_amount
+      t.decimal :pcf_pcf_excluding_biogenic
+      t.decimal :pcf_pcf_including_biogenic
+      t.decimal :pcf_fossil_ghg_emissions
+      t.decimal :pcf_fossil_carbon_content
+      t.decimal :pcf_biogenic_carbon_content
+      t.decimal :pcf_d_luc_ghg_emissions
+      t.decimal :pcf_land_management_ghg_emissions
+      t.decimal :pcf_other_biogenic_ghg_emissions
+      t.decimal :pcf_i_luc_ghg_emissions
+      t.decimal :pcf_biogenic_carbon_withdrawal
+      t.decimal :pcf_aircraft_ghg_emissions
       t.string :pcf_characterization_factors
       t.string :pcf_cross_sectoral_standards_used
       t.string :pcf_product_or_sector_specific_rules
       t.string :pcf_biogenic_accounting_methodology
       t.string :pcf_boundary_processes_description
-      t.string :pcf_reference_period_start
-      t.string :pcf_reference_period_end
+      t.datetime :pcf_reference_period_start
+      t.datetime :pcf_reference_period_end
       t.string :pcf_geography_country_subdivision
       t.string :pcf_geography_country
       t.string :pcf_geography_region_or_subregion

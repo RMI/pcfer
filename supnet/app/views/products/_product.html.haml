@@ -3,35 +3,13 @@
     %strong UUID:
     =product.id
 
-    - product.attribute_names.collect do |attribute_name|
+    - product.attributes.each do |attribute|
       %div
-        %strong #{attribute_name.humanize}:
-        = product.public_send(attribute_name)
+        %strong #{attribute[0].humanize}:
 
-  -# %div
-  -#   %strong Volume:
-  -#   = product.volume
-  -# %div
-  -#   %strong Unit:
-  -#   = product.unit
-  -# %div
-  -#   %strong Category:
-  -#   = product.category
-  -# %div
-  -#   %strong Subcategory:
-  -#   = product.subcategory
-  -# %div
-  -#   %strong Location:
-  -#   = product.location
-  -# %div
-  -#   %strong Vendor:
-  -#   = product.vendor
-  -# %div
-  -#   %strong Description:
-  -#   = product.description
-  -# %div
-  -#   %strong Carbon intensity:
-  -#   = product.carbon_intensity
-  -# %div
-  -#   %strong Produced at:
-  -#   = product.produced_at
+        - if attribute[0] == 'created'
+          = product.created_at
+        - elsif attribute[0] == 'updated' && (product.created_at != product.updated_at)
+          = product.updated_at
+        - else
+          = attribute[1]

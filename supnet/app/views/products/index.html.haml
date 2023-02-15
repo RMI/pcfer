@@ -1,8 +1,7 @@
-%p{:style => "color: green"}= notice
-
-%h1 Products
-
-= link_to "New product request", new_product_path, class: "btn btn-primary"
+%h1{style: "margin-bottom: 50px;"}
+  PCFs
+  %span{style: "margin: -10px 0 10px 50px;"}
+    = link_to "New PCF", new_product_path, class: "btn btn-primary"
 
 %table{id: "products", class: "table table-hover"}
   - @products.each do |product|

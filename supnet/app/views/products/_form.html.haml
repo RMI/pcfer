@@ -14,16 +14,14 @@
           precedingPfIds
 
   .form-group
-    = form.label :spec_version
-    %div
-      2.0.0
+    Spec version 2.0.0
 
   .form-group
     = form.label :preceding_pf_ids, "Preceding product footprint identifiers"
     = form.text_field :preceding_pf_ids, class: "form-control"
   .form-group
-    = form.label :version
-    = form.text_field :version, class: "form-control"
+    = form.label :version, "Version <sup>*</sup>".html_safe
+    = form.number_field :version, class: "form-control", required: true
   .form-group
     = form.label :status, "Status <sup>*</sup>".html_safe
     = form.select :status, ["Active", "Deprecated"], {include_blank: '-- Select One --'}, {class: "form-select" , required: true}
@@ -40,18 +38,17 @@
     = form.label :company_name, "Company name <sup>*</sup>".html_safe
     = form.text_field :company_name, class: "form-control", required: true
   .form-group
-    = form.label :company_ids, "Company IDs <sup>*</sup>".html_safe
-    = form.text_field :company_ids, class: "form-control", required: true
+    = form.label :company_ids, "Company IDs (URNs, one per line) <sup>*</sup>".html_safe
+    = form.text_area :company_ids, class: "form-control", required: true
   .form-group
     = form.label :product_description, "Product description <sup>*</sup>".html_safe
     = form.text_field :product_description, class: "form-control", required: true
   .form-group
-    = form.label :product_ids, "Product IDs <sup>*</sup>".html_safe
-    = form.text_field :product_ids, class: "form-control", required: true
+    = form.label :product_ids, "Product IDs (URNs, one per line) <sup>*</sup>".html_safe
+    = form.text_area :product_ids, class: "form-control", required: true
   .form-group
     = form.label :product_category_cpc, "Product category CPC <sup>*</sup>".html_safe
     = form.text_field :product_category_cpc, class: "form-control", required: true
-
   .form-group
     = form.label :product_name_company, "Product name company <sup>*</sup>".html_safe
     = form.text_field :product_name_company, class: "form-control", required: true
@@ -74,7 +71,6 @@
   .form-group
     = form.label :pcf_fossil_ghg_emissions, "PCF fossil GHG emissions <sup>*</sup>".html_safe
     = form.number_field :pcf_fossil_ghg_emissions, class: "form-control", required: true
-
   .form-group
     = form.label :pcf_fossil_carbon_content, "PCF fossil carbon content <sup>*</sup>".html_safe
     = form.number_field :pcf_fossil_carbon_content, class: "form-control", required: true
@@ -108,10 +104,11 @@
     = select_tag 'product[pcf_cross_sectoral_standards_used]', options_for_select([ "GHG Protocol Product standard", "ISO Standard 14067", "ISO Standard 14044" ]), {multiple: true, class: "form-select"}
   .form-group
     = form.label :pcf_product_or_sector_specific_rules
-    = form.text_field :pcf_product_or_sector_specific_rules, class: "form-control"
+    -# = form.text_field :pcf_product_or_sector_specific_rules, class: "form-control"
+    = select_tag 'product[pcf_product_or_sector_specific_rules]', options_for_select([ "PEF", "EPD International", "Other" ]), {multiple: true, class: "form-select"}
   .form-group
     = form.label :pcf_biogenic_accounting_methodology
-    = form.text_field :pcf_biogenic_accounting_methodology, class: "form-control"
+    = form.select :pcf_biogenic_accounting_methodology, ["PEF", "ISO", "GHGP", "Quantis"], {include_blank: '-- Select One --'}, {class: "form-select"}
   .form-group
     = form.label :pcf_boundary_processes_description
     = form.text_field :pcf_boundary_processes_description, class: "form-control"
@@ -122,20 +119,20 @@
     = form.label :pcf_reference_period_end, "PCF reference period end <sup>*</sup>".html_safe
     = form.datetime_field :pcf_reference_period_end, class: "form-control", required: true
   .form-group
-    = form.label :pcf_geography_country_subdivision
+    = form.label :pcf_geography_country_subdivision, "PCF Geography country subdivision (an a ISO 3166-2 Subdivision Code, ie, US-NY. See <a href=\"https://wbcsd.github.io/data-exchange-protocol/v2/#dt-carbonfootprint-scope\">docs</a> for full geo guidance)".html_safe
     = form.text_field :pcf_geography_country_subdivision, class: "form-control"
   .form-group
     = form.label :pcf_geography_country
-    = form.text_field :pcf_geography_country, class: "form-control"
+    = form.select :pcf_geography_country, Country.all.collect{|c| [c.common_name, c.alpha2]}, {include_blank: '-- Select One --'}, {class: "form-select"}
   .form-group
     = form.label :pcf_geography_region_or_subregion
-    = form.text_field :pcf_geography_region_or_subregion, class: "form-control"
+    = form.select :pcf_geography_region_or_subregion, Product::REGIONS, {include_blank: '-- Select One --'}, {class: "form-select"}
   .form-group
     = form.label :pcf_secondary_emission_factor_sources
     = form.text_field :pcf_secondary_emission_factor_sources, class: "form-control"
   .form-group
     = form.label :pcf_exempted_emissions_percent, "PCF exempted emissions percent <sup>*</sup>".html_safe
-    = form.text_field :pcf_exempted_emissions_percent, class: "form-control", required: true
+    = form.number_field :pcf_exempted_emissions_percent, class: "form-control", required: true
   .form-group
     = form.label :pcf_exempted_emissions_description, "PCF exempted emissions description <sup>*</sup>".html_safe
     = form.text_field :pcf_exempted_emissions_description, class: "form-control", required: true
@@ -153,28 +150,27 @@
     = form.text_field :pcf_uncertainty_assessment_description, class: "form-control"
   .form-group
     = form.label :pcf_primary_data_share
-    = form.text_field :pcf_primary_data_share, class: "form-control"
+    = form.number_field :pcf_primary_data_share, class: "form-control"
   .form-group
     = form.label :pcf_dqi_coverage_percent
-    = form.text_field :pcf_dqi_coverage_percent, class: "form-control"
+    = form.number_field :pcf_dqi_coverage_percent, class: "form-control"
   .form-group
     = form.label :pcf_dqi_technological_dqr
-    = form.text_field :pcf_dqi_technological_dqr, class: "form-control"
+    = form.number_field :pcf_dqi_technological_dqr, class: "form-control"
   .form-group
     = form.label :pcf_dqi_temporal_dqr
-    = form.text_field :pcf_dqi_temporal_dqr, class: "form-control"
+    = form.number_field :pcf_dqi_temporal_dqr, class: "form-control"
   .form-group
     = form.label :pcf_dqi_geographical_dqr
-    = form.text_field :pcf_dqi_geographical_dqr, class: "form-control"
+    = form.number_field :pcf_dqi_geographical_dqr, class: "form-control"
   .form-group
     = form.label :pcf_dqi_completeness_dqr
-    = form.text_field :pcf_dqi_completeness_dqr, class: "form-control"
+    = form.number_field :pcf_dqi_completeness_dqr, class: "form-control"
   .form-group
     = form.label :pcf_dqi_reliability_dqr
-    = form.text_field :pcf_dqi_reliability_dqr, class: "form-control"
+    = form.number_field :pcf_dqi_reliability_dqr, class: "form-control"
   .form-group
     = form.label :pcf_assurance_coverage
-    = form.text_field :pcf_assurance_coverage, class: "form-control"
     = form.select :pcf_assurance_level, ["corporate level", "product line", "PCF system", "product level"], {include_blank: true}, {class: "form-select"}
   .form-group
     = form.label :pcf_assurance_level
@@ -196,8 +192,7 @@
     = form.text_field :pcf_assurance_comments, class: "form-control"
   .form-group
     = form.label :extensions
-    = form.text_field :extensions, class: "form-control"
-
+    = form.text_area :extensions, class: "form-control"
   .form-group
     %br
     %button{type: "submit", class: "btn btn-primary"}
@@ -205,6 +200,6 @@
         Edit
       - else
         Create
-      product request
+      PCF
 %br
 %br

@@ -37,6 +37,8 @@ Notes:
 
 rails generate scaffold jetFuel volume:integer unit:string category:string subcategory:string location:string vendor:string carbon_intensity:decimal produced_at:datetime
 
+rails generate model source product:references node:references
+
 rails generate scaffold node owner:string category:string subcategory:string url:string
 
 # POST /jet_fuel find carbon intensity and create a record of what's getting retunred

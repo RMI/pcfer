@@ -42,14 +42,14 @@ docker ps
 docker exec -t -i supnet-supnet-1 /bin/bash
 ```
 
-1. After building for the first time you'll see need to create the databases. ctl-c, then run:
+1. After building for the first time you'll see you need to create the databases. ctl-c, then run:
 
 ```
 docker compose run supnet rails db:create
 docker compose run supnet rails db:migrate
 ```
 
-1. Once the database is configured, you can start the containers normally:
+1. Once the database is set up, you can start the containers normally:
 
 ```
 docker compose up
@@ -58,9 +58,10 @@ docker compose up
 You should then be able to hit it at http://localhost:3000, and just run `docker compose up` any time you want to start the app+db container
 
 ## TODO
-- Add validation (required fields present, urns, dates)
-- Form should have dropdown for set fields (ie, ISO Standard 14067 et al for crossSectoralStandardsUsed)
-- Add UI indicator for required fields
+- Test creation via API, sending json
+- Add export to CSV
+- Add uploader to create via CSV (invert the output of CSV export, make robust--postelize)
+- URN fields need to convert to sets
 - Add info mouseover explaining fields
 - Simplified view to show only required and most common fields
 - Add node selector for product requests to ingest outside data
