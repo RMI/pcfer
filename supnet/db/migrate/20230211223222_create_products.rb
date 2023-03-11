@@ -1,6 +1,8 @@
 class CreateProducts < ActiveRecord::Migration[7.0]
   def change
     create_table :products, id: :uuid do |t|
+      t.string :original_id
+      t.uuid :vendor_id
       t.string :spec_version
       t.string :preceding_pf_ids
       t.integer :version
@@ -58,7 +60,7 @@ class CreateProducts < ActiveRecord::Migration[7.0]
       t.string :pcf_assurance_level
       t.string :pcf_assurance_boundary
       t.string :pcf_assurance_provider_name
-      t.string :pcf_assurance_completed_at
+      t.datetime :pcf_assurance_completed_at
       t.string :pcf_assurance_standard_name
       t.string :pcf_assurance_comments
       t.string :extensions

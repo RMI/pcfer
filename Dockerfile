@@ -1,10 +1,9 @@
-# FROM ruby:3.2.1-alpine3.17 AS supnet-dev
 FROM ruby:3.2.1 AS supnet-development
 
 # Install yarn
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg -o /root/yarn-pubkey.gpg && apt-key add /root/yarn-pubkey.gpg
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list
-RUN apt-get update && apt-get install -y --no-install-recommends nodejs yarn
+RUN apt-get update && apt-get install -y --no-install-recommends nodejs yarn vim
 
 # Default directory
 ENV INSTALL_PATH /opt/app

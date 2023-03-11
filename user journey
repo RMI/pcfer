@@ -1,3 +1,25 @@
+A is a buyer of widgets (ie, Airbus buying compute). They want to be sent emissions data in PACT format from their widget suppliers/vendors, like B.
+
+B is a vendor of widgets (or compute, like AWS). They sell to A. They need to be able to enter PCF data into their system, then send it to A, like you wish you could have done with the CCFT.
+
+B creates a Customer object in their system for B (and all of their customers). Creating the customer object creates an API key, which together with the endpoint can be supplied to the actual customer--just like the way you wish you could have given your customers an endpoint.
+
+A creates a Vendor object in their system for B (and all their widget suppliers--like Airbus might have created a Vendor object to receive AWS data). They then add the API endpoint and key supplied to them by B to the Vendor object.
+
+[This demo skips the parts where A sends the API endpoint and key to B. That would probably be in an email. It could mean just sending them the key for their own use. It could also be emailing them a link to set up an account--and then B would get a URL, and actually do the creation of the Vendor account/object themselves, and get the key that way. Either way, they end up with endpoint and key, and A has an entry for them in their system.]
+
+For B to push emissions data to A, they go to their product page for the widget, select A from the dropdown of their Customers, and hit 'send'. That sends the PCF data and the API key to the customer's endpoint.
+
+A's system receives the request. It saves the PCF data, then looks up the vendor object using the API key. It associated the PCF just received with the vendor (B, or AWS), so that when they look at the vendor page in their system, they see all the PCFs they've received.
+
+Next step: you'll want B to have a record of each send event, so some kind of object like PCFSendEvent.
+
+
+
+
+
+--------------------------
+
 App based on this tutorial:
 https://semaphoreci.com/community/tutorials/dockerizing-a-ruby-on-rails-application
 
@@ -60,3 +82,5 @@ docker rm -f $(docker ps -a -q)
 
 Delete all volumes using the following command:
 docker volume rm $(docker volume ls -q)
+
+curl -v -H 'Content-Type: application/json' -d "@test_pact.json" -X POST http://localhost:3000/products.json

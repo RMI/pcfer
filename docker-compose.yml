@@ -2,25 +2,51 @@ version: "3.9"
 
 services:
 
-  postgres:
+  seller-postgres:
     image: postgres:15.2
     environment:
       POSTGRES_USER: supnet
       POSTGRES_PASSWORD: test_db_password
+    ports:
+      - '6543:5432'
     volumes:
-      - supnet-postgres:/var/lib/postgresql/data
+      - seller-postgres:/var/lib/postgresql/data
 
-  supnet:
+  seller-pactifier:
     build:
       context: .
     volumes:
       - ./supnet:/opt/app
     links:
-      - postgres
+      - seller-postgres
+    ports:
+      - '3030:3000'
+    env_file:
+      - .seller.env
+
+  buyer-postgres:
+    image: postgres:15.2
+    environment:
+      POSTGRES_USER: supnet
+      POSTGRES_PASSWORD: test_db_password
+    ports:
+      - '6544:5432'
+    volumes:
+      - buyer-postgres:/var/lib/postgresql/data
+
+  buyer-pactifier:
+    build:
+      context: .
+    volumes:
+      - ./supnet:/opt/app
+    links:
+      - buyer-postgres
     ports:
       - '3000:3000'
     env_file:
-      - .env
+      - .buyer.env
 
 volumes:
-  supnet-postgres:
+  seller-postgres:
+  buyer-postgres:
+  supnet:

@@ -1,13 +1,33 @@
 %div{:id => "#{dom_id product}"}
+
   %div
-    %strong UUID:
-    =product.id
+    %strong
+      ID:
+    = product.attributes['id']
+  %div
+    %strong
+      Company name:
+    = product.company_name
+  %div
+    %strong
+      Product company name:
+    = product.product_name_company
+    %br/
+    %br/
 
-    - product.attributes.each do |attribute|
+  - product.attributes.each do |attribute|
+    - unless attribute[0].in?(['id', 'company_name', 'product_name_company'])
       %div
-        %strong #{attribute[0].humanize}:
+        %strong
+          - unless attribute[0] == 'vendor_id'
+            #{attribute[0].humanize}:
 
-        - if attribute[0] == 'created'
+        - if attribute[0] == 'vendor_id'
+          - if product.vendor.present?
+            = link_to product.vendor.name, product.vendor
+          - else
+            This is your PCF, intended to send to your customers.
+        - elsif attribute[0] == 'created'
           = product.created_at
         - elsif attribute[0] == 'updated' && (product.created_at != product.updated_at)
           = product.updated_at

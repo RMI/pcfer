@@ -1,0 +1,34 @@
+= form_for @vendor do |f|
+  - if @vendor.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@vendor.errors.count, "error")} prohibited this vendor from being saved:"
+      %ul
+        - @vendor.errors.full_messages.each do |message|
+          %li= message
+
+  .form-group
+    = f.label :name
+    = f.text_field :name, class: "form-control"
+  .form-group
+    = f.label :description
+    = f.text_area :description, class: "form-control"
+  .form-group
+    = f.label :email
+    = f.email_field :email, class: "form-control"
+  .form-group
+    = f.label :email_message
+    = f.text_area :email_message, class: "form-control"
+  -# .form-group
+  -#   = f.label :api_endpoint
+  -#   = f.text_field :api_endpoint, class: "form-control"
+  -# .form-group
+  -#   = f.label :api_key
+  -#   = f.text_field :api_key, class: "form-control"
+  .form-group
+    %br
+    %button{type: "submit", class: "btn btn-primary"}
+      - if request.path.include?("edit")
+        Edit
+      - else
+        Create
+      Vendor

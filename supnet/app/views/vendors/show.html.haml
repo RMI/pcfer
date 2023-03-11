@@ -1,0 +1,52 @@
+= render "shared/vendor_nav"
+
+%div
+  %b Name:
+  = @vendor.name
+  (<span class="id">#{link_to 'ID', '#', onclick: "$('.id').fadeToggle();"}</span><span class="id" style="display: none;">#{@vendor.id}</span>)
+
+%div
+  %b Email:
+  = @vendor.email
+
+- if @vendor.email_message.present?
+  %div
+    %b Email message:
+    = @vendor.email_message
+
+- if @vendor.description.present?
+  %div
+    %br/
+    %b Description:
+    = @vendor.description
+%div
+  <span class="api">#{link_to 'API Info', '#', onclick: "$('.api').fadeToggle();"}</span>
+  .api{style: "display: none; padding: 10px; margin: 15px 0 15px 0; border: 1px solid grey;"}
+    Instructions: POST PACT-formatted JSON to the endpoint, with the API key in the header of the request.
+    %br/
+    %br/
+    %div
+      %b API endpoint
+      http://localhost:3000/products.json
+    %div
+      %b API key:
+      = @vendor.api_key
+
+- if @vendor.products
+  %div
+    %br/
+    %b PCFs sent by #{@vendor.name}
+    %ul
+      - @vendor.products.each do |product|
+        %li
+          = link_to product.product_name_company, product
+
+%br/
+
+.btn-toolbar{role: "toolbar", "aria-label": "Toolbar with button groups"}
+  = link_to "Edit", edit_vendor_path(@vendor), class: "btn btn-primary"
+  &nbsp;
+  = button_to "Destroy this vendor", @vendor, method: :delete, class: "btn btn-danger", onclick: "return confirm('Estas seguro? This will also destroy all PCFs associated with this vendor.');"
+
+%br/
+%br/

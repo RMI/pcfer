@@ -1,0 +1,85 @@
+= render "shared/customers_nav"
+
+%div
+  %b Name:
+  = @customer.name
+%div
+  %b ID:
+  = @customer.id
+%div
+  %b Email:
+  = @customer.email
+%div
+  %b Description:
+  = @customer.description
+  %br/
+  %br/
+
+%div
+  API provided by customer:
+  %div
+    %b Endpoint:
+    = @customer.api_endpoint
+  %div
+    %b Key:
+    = @customer.api_key
+
+%br/
+
+-# %div{style: "border: 1px solid grey; padding: 20px;"}
+-#   %i
+-#     This form probably goes away what you really want to be doing, I think, is sending things from the Product show page.
+-#     %br/
+-#     %br/
+-#     Send this customer a PCF via API by selecting it from the list below. This form simulates a Vendor sending a PCF, and imagines that the API info above has been given to the Vendor--so the PCF might be sent by someone else running this app, or running <i>any</a> app that can send PACT data. We might want to add another dropdown selecting the Vendor doing the sending.
+
+-#     %br
+-#     %br/
+-#     This can't get the product from the DB, it's supposed to be simulating an external system, it has to use HTTP. I think you need to add a 'send' method to the products_controller, which takes a product_id, and a customer_id, then gets theh product, serializes it, and sends it via HTTP to the customer's API endpoint, using their API key.
+
+-#   %br/
+-#   %br/
+
+-#   <form id="pcf_send_form">
+-#   <select class="form-select" aria-label="Default select example" name="pcf_id">
+-#   - @sendable_pcfs.each do |pcf|
+-#     <option value="#{pcf.id}">
+-#     #{pcf.company_and_product_name}
+-#     </option>
+-#   </select>
+-#   <input type="submit" value="Send PCF" class="btn btn-outline-primary btn-sm" style="margin-top: 10px;">
+-#   </form>
+
+-# :javascript
+
+-#   $( "#pcf_send_form" ).submit(function( event ) {
+-#     console.log("foo");
+-#     console.log( $(this).serialize() );
+-#     $.ajax({
+-#       type: "POST",
+-#       url: '#{@customer.api_endpoint}',
+-#       headers: { 'X-API-Key': '#{@customer.api_key}' },
+-#       data: $("#pcf_send_form").serialize(),
+-#       success: function(data) {
+-#         // Ajax call completed successfully
+
+-#         alert("Form Submited Successfully");
+-#       },
+-#       error: function(data) {
+-#         // Some error in ajax call
+-#         alert("some Error");
+-#       }
+-#     });
+-#     event.preventDefault();
+-#   });
+
+%br/
+%br/
+
+.btn-toolbar{role: "toolbar", "aria-label": "Toolbar with button groups"}
+  = link_to "Edit", edit_customer_path(@customer), class: "btn btn-primary"
+  &nbsp;
+  = button_to "Destroy this customer", @customer, method: :delete, class: "btn btn-danger", onclick: "return confirm('For real?');"
+
+%br/
+%br/

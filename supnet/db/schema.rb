@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_15_052332) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_07_061339) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "customers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.text "description"
+    t.string "api_endpoint"
+    t.string "api_key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "nodes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "owner"
@@ -28,6 +38,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_15_052332) do
   end
 
   create_table "products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "original_id"
+    t.uuid "vendor_id"
     t.string "spec_version"
     t.string "preceding_pf_ids"
     t.integer "version"
@@ -85,7 +97,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_15_052332) do
     t.string "pcf_assurance_level"
     t.string "pcf_assurance_boundary"
     t.string "pcf_assurance_provider_name"
-    t.string "pcf_assurance_completed_at"
+    t.datetime "pcf_assurance_completed_at"
     t.string "pcf_assurance_standard_name"
     t.string "pcf_assurance_comments"
     t.string "extensions"
@@ -100,6 +112,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_15_052332) do
     t.datetime "updated_at", null: false
     t.index ["node_id"], name: "index_sources_on_node_id"
     t.index ["product_id"], name: "index_sources_on_product_id"
+  end
+
+  create_table "vendors", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.text "email_message"
+    t.text "description"
+    t.string "api_endpoint"
+    t.string "api_key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_foreign_key "sources", "nodes"

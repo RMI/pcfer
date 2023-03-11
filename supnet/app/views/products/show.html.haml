@@ -1,12 +1,63 @@
 = render "shared/product_nav"
 
-= render @product
+-# This sends this product's json data to the API endpoint of customer chosen, using their API key
+-# in these demos it's on the same system, but it typically won't be.actions
 
-%br
+-# So we have a customer and a product on this end.
+-# on the other end, if they were running this same software, there would be a Vendor object, who supplied the API endpoint & key?
+<div style="border: 1px solid black; margin-bottom: 30px; padding: 20px;">
+
+%div{style: "margin: 0 0 10px 10px;"}
+  Send PDF for
+  %b
+    = @product.company_and_product_name
+
+%div{style: "margin: 10px 0 10px 10px;"}
+  to
+
+<form id="pcf_send_form">
+
+<select class="form-select" aria-label="Default select example" name="customer_id">
+- Customer.all.each do |customer|
+  <option value="#{customer.id}">
+  #{customer.name}
+  </option>
+</select>
+<input type="submit" id="pcf_send_form" class="btn btn-primary" style="margin-top: 10px;" />
+</form>
+</div>
+
+:javascript
+  $( "#pcf_send_form" ).submit(function( event ) {
+    console.log("foo");
+    console.log( $(this).serialize() );
+    $.ajax({
+      type: "POST",
+      url: '#{send_pcf_product_url(@product, format: :json)}',
+      data: $("#pcf_send_form").serialize(),
+      success: function(data) {
+        // Ajax call completed successfully
+
+        alert("Form Submited Successfully");
+      },
+      error: function(data) {
+        // Some error in ajax call
+        alert("some Error");
+      }
+    });
+    event.preventDefault();
+  });
+
+= render @product
 
 .btn-toolbar{role: "toolbar", "aria-label": "Toolbar with button groups"}
   = link_to "Edit", edit_product_path(@product), class: "btn btn-primary"
   &nbsp;
   = link_to "View json", product_path(@product, format: :json), class: "btn btn-primary"
   &nbsp;
-  = button_to "Destroy this product", @product, method: :delete, class: "btn btn-danger"
+  = button_to "Destroy this product", @product, method: :delete, class: "btn btn-danger", onclick: "return confirm('This can never, ever be undone.');"
+
+%hr/
+
+%br/
+%br/

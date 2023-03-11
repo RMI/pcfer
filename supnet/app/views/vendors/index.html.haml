@@ -1,0 +1,19 @@
+%h1{style: "margin-bottom: 50px;"}
+  Your Vendors
+  %span{style: "margin: -10px 0 10px 50px;"}
+    = link_to "New Vendor", new_vendor_path, class: "btn btn-primary"
+
+%table
+  %thead
+    %tr
+      %th Name
+      %th Email
+
+  %tbody
+    - @vendors.each do |vendor|
+      %tr
+        %td{style: "padding-right: 25px;"}
+          =link_to vendor.name, vendor
+        %td= vendor.email
+
+%br

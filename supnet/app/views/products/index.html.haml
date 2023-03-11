@@ -1,11 +1,22 @@
 %h1{style: "margin-bottom: 50px;"}
-  PCFs
-  %span{style: "margin: -10px 0 10px 50px;"}
-    = link_to "New PCF", new_product_path, class: "btn btn-primary"
+  #{@whose} PCFs
+  - if @whose == "Your"
+    %span{style: "margin: -10px 0 10px 50px;"}
+      = link_to "New PCF", new_product_path, class: "btn btn-primary"
+
+  -# %span{style: "margin: -10px 0 10px 20px;"}
+  -#   = link_to "Upload CSV", new_product_path, class: "btn btn-primary"
 
 %table{id: "products", class: "table table-hover"}
   - @products.each do |product|
     %tr
       %td
-        = link_to product.id, product_path(product)
-        -# = link_to "#{product.volume} #{product.unit}, on #{product.created_at}", product_path(product)
+        #{link_to product.company_and_product_name, product_path(product)}
+
+        - if product.vendor.present?
+          from #{link_to product.vendor.name, product.vendor},
+
+
+        -# = product.created_at.strftime("%b %-d, %Y, at %-I:%M%P")
+
+

@@ -1,0 +1,28 @@
+:css
+  sup {color: red;}
+
+= form_for @customer do |f|
+  - if @customer.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@customer.errors.count, "error")} prohibited this customer from being saved:"
+      %ul
+        - @customer.errors.full_messages.each do |message|
+          %li= message
+
+  .form-group
+    = f.label :name, "Name <sup>*</sup>".html_safe
+    = f.text_field :name, class: "form-control", required: true
+  .form-group
+    = f.label :email
+    = f.email_field :email, class: "form-control"
+  .form-group
+    = f.label :description
+    = f.text_area :description, class: "form-control"
+  .form-group
+    = f.label :api_endpoint
+    = f.text_field :api_endpoint, class: "form-control"
+  .form-group
+    = f.label :api_key
+    = f.text_field :api_key, class: "form-control"
+  .actions
+    = f.submit 'Save', class: "btn btn-primary"
