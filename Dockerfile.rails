@@ -1,7 +1,7 @@
 # Dockerfile.rails
 # from: https://semaphoreci.com/community/tutorials/dockerizing-a-ruby-on-rails-application
 
-FROM ruby:3.2.1 AS pactifier-toolbox
+FROM ruby:3.2.1 AS pcfer-toolbox
 
 # Default directory
 ENV INSTALL_PATH /opt/app

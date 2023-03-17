@@ -12,6 +12,7 @@ RUN mkdir -p $INSTALL_PATH
 # Install gems
 WORKDIR $INSTALL_PATH
 COPY supnet/ .
+
 RUN rm -rf node_modules vendor
 RUN gem install rails bundler
 RUN bundle install

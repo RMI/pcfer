@@ -5,14 +5,14 @@ services:
   seller-postgres:
     image: postgres:15.2
     environment:
-      POSTGRES_USER: supnet
+      POSTGRES_USER: pcfer
       POSTGRES_PASSWORD: test_db_password
     ports:
       - '6543:5432'
     volumes:
       - seller-postgres:/var/lib/postgresql/data
 
-  seller-pactifier:
+  seller-pcfer:
     build:
       context: .
     volumes:
@@ -27,14 +27,14 @@ services:
   buyer-postgres:
     image: postgres:15.2
     environment:
-      POSTGRES_USER: supnet
+      POSTGRES_USER: pcfer
       POSTGRES_PASSWORD: test_db_password
     ports:
       - '6544:5432'
     volumes:
       - buyer-postgres:/var/lib/postgresql/data
 
-  buyer-pactifier:
+  buyer-pcfer:
     build:
       context: .
     volumes:

@@ -25,74 +25,41 @@ class ProductsController < ApplicationController
       format.html { render :show }
       format.json do
 
-        # THIS should be DRYed up-----
-        @top={}
-        @pcf={}
-        @dqi={}
-        @assurance={}
-        # go through fields, fill in the nested parts
-        @product.attributes.each do |attribute|
-          if attribute[0].include?("pcf_dqi_")
-            @dqi[attribute[0]] = attribute[1]
-          elsif attribute[0].include?("pcf_assurance_")
-            @assurance[attribute[0]] = attribute[1]
-          elsif attribute[0].include?("pcf_")
-            @pcf[attribute[0]] = attribute[1]
-          else
-            @top[attribute[0]] = attribute[1]
-          end
-        end
-        # -----------------------------
+        # # THIS should be DRYed up-----
+        # @top={}
+        # @pcf={}
+        # @dqi={}
+        # @assurance={}
+        # # go through fields, fill in the nested parts
+        # @product.attributes.each do |attribute|
+        #   if attribute[0].include?("pcf_dqi_")
+        #     @dqi[attribute[0]] = attribute[1]
+        #   elsif attribute[0].include?("pcf_assurance_")
+        #     @assurance[attribute[0]] = attribute[1]
+        #   elsif attribute[0].include?("pcf_")
+        #     @pcf[attribute[0]] = attribute[1]
+        #   else
+        #     @top[attribute[0]] = attribute[1]
+        #   end
+        # end
+        # # -----------------------------
 
-        # then output json that reflects the proper pact, instead of the rails object
-
+        # # TODO: Replace with rendering pretty-printed @product.to_pact.to_json
         render "products/pact"
       end
     end
   end
 
-  #   send_product(product) is the route to
-  #   send_product POST   /products/:id/send(.:format)     products#send
-  #   include customer_id and api_key in header
   def send_pcf
     respond_to do |format|
       format.html { render :show }
       format.json do
-        logger.debug "-----------> hit it!"
-        # you've got the product
-        logger.debug "-----------> Product is: #{@product.company_name}"
         @customer = Customer.find(params[:customer_id])
-        logger.debug "-----------> Customer is: #{@customer.name}"
-        logger.debug "-----------> Customer endpoint: #{@customer.api_endpoint}"
-        logger.debug "-----------> Customer key: #{@customer.api_key}"
 
-        uri = URI( @customer.api_endpoint )
-
-        logger.debug uri.scheme
-        # #=> "http"
-        logger.debug uri.host
-        # #=> "foo.com"
-        logger.debug uri.path
-        # #=> "/posts"
-        # uri.query
-        # #=> "id=30&limit=5"
-        # uri.fragment
-        # #=> "time=1305298413"
-        # uri.to_s
-        # #=> "http://foo.com/posts?id=30&limit=5#time=1305298413"
-        logger.debug uri.port
-
-        # serialize the product, send to endpoint via Faraday
-        conn = Faraday.new(
-          url: "#{uri.scheme}://#{uri.host}:#{uri.port}",
-          headers: {"Content-Type": "application/json", "X-API-Key": "#{@customer.api_key}"}
-        )
-        logger.debug "created faraday connection"
-
-        response = conn.post( uri.path ) do |req|
-          req.body = @product.to_json
-        end
-
+        HTTParty.post(  @customer.api_endpoint,
+                        body: @product.to_pact.to_json,
+                        headers: { 'Content-Type' => 'application/json',
+                                    "X-API-Key": "#{@customer.api_key}" })
       end
     end
   end
@@ -110,24 +77,16 @@ class ProductsController < ApplicationController
 
   # POST /products or /products.json
   def create
-    logger.debug "--------------> JUST HIT CREATE"
-    logger.debug "-------> X-API-Key: #{request.headers["X-API-Key"]}"
-    # logger.debug "-------> all the params: #{params.to_unsafe_h}"
-
     respond_to do |format|
       format.html {
         @product = Product.new(product_params)
       }
 
       format.json {
-        logger.debug "------- in json"
-        @product = Product.new
-
         if request.headers.include?("X-API-Key")
-          logger.debug "-------> got key"
-          if vendors = Vendor.where( "api_key = ?", request.headers["X-API-Key"] )
-            logger.debug "-------> got vendors"
-            logger.debug "-------> which is: #{vendors.first.inspect}"
+          # Get the vendor by unique API key and attach to the Product
+          if vendors = Vendor.where("api_key = ?", request.headers["X-API-Key"])
+            @product = Product.new
             @product.vendor = vendors.first
           else
             logger.debug "could not find vendor"
@@ -137,47 +96,71 @@ class ProductsController < ApplicationController
           logger.debug "Missing API key for POSTED PCF info"
           return 401
         end
-        logger.debug "product vendor is: #{@product.vendor.inspect}"
 
-        # go through pact-format post params and convert to the rails model attributes
-        # DRY this up?
+        # Go through pact-format post params and convert to the rails model
+        # attributes.
+
+        #DRY this up?
+
+        # Data coming in via API will be in nested PACT format, but it needs to be saved
+        # in flat fields corresponding to the Rails model attributes, so we iterate through
+        # the PACT-format params, and flatten by namespace (pcf, dqi, assurance)
         request.POST.each do |param|
+          # deal with evereything under pcf
           if param[0] == "pcf"
-            logger.debug "--> processing #{param[0]}"
             pcf_params = param[1]{}
             pcf_params.each do |pcf_param|
+
+              # deal with dqi
               if pcf_param[0] == "dqi"
                 dqi_params = pcf_param[1]
                 dqi_params.each do |dqi_param|
                   @product.public_send("pcf_dqi_#{dqi_param[0]}=", dqi_param[1])
                 end
+
+              # deal with assurance
               elsif pcf_param[0] == "assurance"
                 ass_params = pcf_param[1]
                 ass_params.each do |ass_param|
                   @product.public_send("pcf_assurance_#{ass_param[0]}=", ass_param[1])
                 end
+
+              # deal with top-level pcf fields
               else
                 @product.public_send("pcf_#{pcf_param[0]}=", pcf_param[1])
               end
             end
           else
-            # else, call the method on the model with the matching name. unless it's "product," I'm not sure why that's even in there.
-            unless param[0] == "product"
+
+            # else, call the method on the model with the matching name. unless
+            # it's "product," I'm not sure why that's even in there, and skip
+            # created_at and updated_at, those are reserved fields for the
+            # actual Rails model, and correspond to that, not the PACT file--
+            # for the created/updated fields for that, refer to the 'created'
+            # and 'updated' fields.
+            unless param[0] == 'vendor_id' || param[0] == 'product' || param[0] == 'created_at' || param[0] == 'updated_at'
               @product.public_send("#{param[0]}=", param[1])
             end
           end
         end
-        logger.debug "---------> done with params"
       } # end format.json block
     end
 
     respond_to do |format|
-      logger.debug "about to save"
-      logger.debug "------> product: #{@product.inspect}"
+
       if @product.save
-        logger.debug "---------> saved product"
+        # if pcf is being sent via API and has has no created timestamp, give it
+        # one. If it has one one, keep it--but Rails will fill in created_at
+        # with the time it was added to the receiving system. Needs to be done
+        # after product is saved once, so that created_at is populated.
+        if @product.created.blank?
+          @product.created = @product.created_at
+        end
+
         format.html {
-          redirect_to product_url(@product), notice: "Product was successfully created." }
+          @product.save
+          redirect_to product_url(@product), notice: "Product successfully created."
+        }
         format.json {
           logger.debug "---------> about to render product. why is location the product?"
           render :show, status: :created, location: @product }
@@ -192,7 +175,9 @@ class ProductsController < ApplicationController
   def update
     respond_to do |format|
       if @product.update(product_params)
-        format.html { redirect_to product_url(@product), notice: "Product was successfully updated." }
+        format.html {
+          redirect_to product_url(@product), notice: "Product successfully updated."
+        }
         format.json { render :show, status: :ok, location: @product }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -206,7 +191,7 @@ class ProductsController < ApplicationController
     @product.destroy
 
     respond_to do |format|
-      format.html { redirect_to products_url, notice: "Product was successfully destroyed." }
+      format.html { redirect_to products_url, notice: "Product successfully destroyed." }
       format.json { head :no_content }
     end
   end

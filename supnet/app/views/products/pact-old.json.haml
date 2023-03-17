@@ -1,0 +1,78 @@
+{
+"id": "#{@product.id}",
+"specVersion": "2.0.0",
+"precedingPfIds": "#{@product.preceding_pf_ids}",
+"version": 0,
+"created": "#{@product.created_at}",
+"updated": "#{@product.updated_at}",
+"status": #{@product.status},
+"statusComment": #{@product.status_comment},
+"validityPeriodStart": #{@product.validity_period_start},
+"validityPeriodEnd": #{@product.validity_period_end},
+"companyName": "#{@product.company_name}",
+"companyIds": [#{@product.company_ids}],
+"productDescription": "#{@product.product_description}",
+"productIds": [#{@product.product_ids}],
+"productCategoryCpc": "#{@product.product_category_cpc}",
+"productNameCompany": "#{@product.product_name_company}",
+"comment": "#{@product.comment}",
+"pcf": {
+"declaredUnit": "#{@product.pcf_declared_unit}",
+"unitaryProductAmount": "#{@product.pcf_unitary_product_amount}",
+"pCfExcludingBiogenic": "#{@product.pcf_pcf_excluding_biogenic}",
+"pCfIncludingBiogenic": "#{@product.pcf_pcf_including_biogenic}",
+"fossilGhgEmissions": "#{@product.pcf_fossil_ghg_emissions}",
+"fossilCarbonContent": "#{@product.pcf_fossil_carbon_content}",
+"biogenicCarbonContent": "#{@product.pcf_biogenic_carbon_content}",
+"dLucGhgEmissions": "#{@product.pcf_d_luc_ghg_emissions}",
+"landManagementGhgEmissions": [{#{@product.pcf_land_management_ghg_emissions}}],
+"otherBiogenicGhgEmissions": "#{@product.pcf_other_biogenic_ghg_emissions}",
+"iLucGhgEmissions": "#{@product.pcf_i_luc_ghg_emissions}",
+"biogenicCarbonWithdrawal": "#{@product.pcf_biogenic_carbon_withdrawal}",
+"aircraftGhgEmissions": "#{@product.pcf_aircraft_ghg_emissions}",
+"characterizationFactors": "#{@product.pcf_characterization_factors}",
+"crossSectoralStandardsUsed": [#{@product.pcf_cross_sectoral_standards_used}],
+"productOrSectorSpecificRules": [
+{
+"operator": "",
+"ruleNames": [
+""
+],
+"otherOperatorName": ""
+}
+],
+"biogenicAccountingMethodology": "#{@product.pcf_biogenic_accounting_methodology}",
+"boundaryProcessesDescription": "#{@product.pcf_boundary_processes_description}",
+"referencePeriodStart": "#{@product.pcf_reference_period_start}",
+"referencePeriodEnd": "#{@product.pcf_reference_period_end}",
+"geographyCountrySubdivision": "#{@product.pcf_geography_country_subdivision}",
+"geographyCountry": "#{@product.pcf_geography_country}",
+"geographyRegionOrSubregion": "#{@product.pcf_geography_region_or_subregion}",
+"secondaryEmissionFactorSources": "#{@product.pcf_secondary_emission_factor_sources}",
+"exemptedEmissionsPercent": "#{@product.pcf_exempted_emissions_percent}",
+"exemptedEmissionsDescription": "#{@product.pcf_exempted_emissions_description}",
+"packagingEmissionsIncluded": "#{@product.pcf_packaging_emissions_included}",
+"packagingGhgEmissions": "#{@product.pcf_packaging_ghg_emissions}",
+"allocationRulesDescription ": "#{@product.pcf_allocation_rules_description}",
+"uncertaintyAssessmentDescription": "#{@product.pcf_uncertainty_assessment_description}",
+"primaryDataShare": "#{@product.pcf_primary_data_share}",
+"dqi": {
+"coveragePercent": "#{@product.pcf_dqi_coverage_percent}",
+"technologicalDQR": "#{@product.pcf_dqi_technological_dqr}",
+"temporalDQR": "#{@product.pcf_dqi_temporal_dqr}",
+"geographicalDQR": "#{@product.pcf_dqi_geographical_dqr}",
+"completenessDQR": "#{@product.pcf_dqi_completeness_dqr}",
+"reliabilityDQR": "#{@product.pcf_dqi_reliability_dqr}",
+},
+"assurance": {
+"coverage": "#{@product.pcf_assurance_coverage}",
+"level": "#{@product.pcf_assurance_level}",
+"boundary": "#{@product.pcf_assurance_boundary}",
+"providerName": "#{@product.pcf_assurance_provider_name}",
+"completedAt": "#{@product.pcf_assurance_completed_at}",
+"standardName": "#{@product.pcf_assurance_standard_name}",
+"comments": "#{@product.pcf_assurance_comments}"
+}
+},
+"extensions": [{#{@product.extensions}}]
+}

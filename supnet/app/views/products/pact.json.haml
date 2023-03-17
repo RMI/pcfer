@@ -1,0 +1,15 @@
+= @product.to_pact.to_json
+"#{attribute[0]}": "#{attribute[1]}",
+"pcf": {
+- @pcf.each do |attribute|
+  "#{attribute[0].delete_prefix("pcf_")}": "#{attribute[1]}",
+"dqi": {
+- @dqi.each do |attribute|
+  "#{attribute[0].delete_prefix("pcf_dqi_")}": "#{attribute[1]}",
+},
+"assurance": {
+- @assurance.each do |attribute|
+  "#{attribute[0].delete_prefix("pcf_assurance_")}": "#{attribute[1]}",
+}
+}
+} %&gt;

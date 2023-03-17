@@ -5,59 +5,74 @@
 
 -# So we have a customer and a product on this end.
 -# on the other end, if they were running this same software, there would be a Vendor object, who supplied the API endpoint & key?
-<div style="border: 1px solid black; margin-bottom: 30px; padding: 20px;">
 
-%div{style: "margin: 0 0 10px 10px;"}
-  Send PDF for
-  %b
-    = @product.company_and_product_name
+- unless @product.vendor_id.blank?
+  %div
+    Received from
+  %h4{style: "margin-bottom: 10px;"}
+    #{link_to @product.vendor.name, @product.vendor}
 
-%div{style: "margin: 10px 0 10px 10px;"}
-  to
+%div
+  Product:
+  %h4
+    = @product.product_name_company
+%div
+  Created #{@product.created.strftime("%b %-d, %Y, at %-I:%M%P")}
 
-<form id="pcf_send_form">
+- if @product.vendor_id.blank?
+  %div{style: "border: 0px solid grey; margin: 20px 0 30px 0; padding: 10px 10px 10px 0;"}
+    %div{style: "margin: 0 0 0 10px;"}
+      Send to
 
-<select class="form-select" aria-label="Default select example" name="customer_id">
-- Customer.all.each do |customer|
-  <option value="#{customer.id}">
-  #{customer.name}
-  </option>
-</select>
-<input type="submit" id="pcf_send_form" class="btn btn-primary" style="margin-top: 10px;" />
-</form>
-</div>
 
-:javascript
-  $( "#pcf_send_form" ).submit(function( event ) {
-    console.log("foo");
-    console.log( $(this).serialize() );
-    $.ajax({
-      type: "POST",
-      url: '#{send_pcf_product_url(@product, format: :json)}',
-      data: $("#pcf_send_form").serialize(),
-      success: function(data) {
-        // Ajax call completed successfully
+    %form{id: "pcf_send_form"}
+      %table{style: "width: 100%; max-width:500px;"}
+        %tr
+          %td{style: "vertical-align: bottom;"}
+            <select class="form-select" aria-label="Default select example" name="customer_id">
+            - Customer.all.each do |customer|
+              <option value="#{customer.id}">
+              #{customer.name}
+              </option>
+            </select>
+          %td{style: "padding-left: 20px; vertical-align: bottom;"}
+            <input type="submit" value="Send PCF" id="pcf_send_form" class="btn btn-primary" style="margin-top: 10px;" />
 
-        alert("Form Submited Successfully");
-      },
-      error: function(data) {
-        // Some error in ajax call
-        alert("some Error");
-      }
-    });
-    event.preventDefault();
-  });
+    :javascript
+      $( "#pcf_send_form" ).submit(function( event ) {
+        console.log("foo");
+        console.log( $(this).serialize() );
+        $.ajax({
+          type: "POST",
+          url: '#{send_pcf_product_url(@product, format: :json)}',
+          data: $("#pcf_send_form").serialize(),
+          success: function(data) {
+            // Ajax call completed successfully
 
-= render @product
+            alert("Form Submited Successfully");
+          },
+          error: function(data) {
+            // Some error in ajax call
+            alert("some Error");
+          }
+        });
+        event.preventDefault();
+      });
 
-.btn-toolbar{role: "toolbar", "aria-label": "Toolbar with button groups"}
-  = link_to "Edit", edit_product_path(@product), class: "btn btn-primary"
+- else
+  %div{style: "border: 0px solid grey; margin: 0px 0 30px 0;"}
+    Received #{@product.created_at.strftime("%b %-d, %Y, at %-I:%M%P")}
+
+<span class="api">#{link_to 'View all fields', '#', onclick: "$('.product').fadeToggle();"}</span>
+%div{class: "product", style: "display: none;"}
+  = render @product
+
+.btn-toolbar{role: "toolbar", "aria-label": "Toolbar with button groups", style: "margin-top: 20px;"}
+  = link_to "Edit", edit_product_path(@product), class: "btn btn-outline-primary btn-sm"
   &nbsp;
-  = link_to "View json", product_path(@product, format: :json), class: "btn btn-primary"
+  = link_to "View json", product_path(@product, format: :json), class: "btn btn-outline-primary btn-sm"
   &nbsp;
-  = button_to "Destroy this product", @product, method: :delete, class: "btn btn-danger", onclick: "return confirm('This can never, ever be undone.');"
+  = button_to "Destroy this product", @product, method: :delete, class: "btn btn-outline-danger btn-sm", onclick: "return confirm('This can never, ever be undone.');"
 
-%hr/
 
-%br/
 %br/

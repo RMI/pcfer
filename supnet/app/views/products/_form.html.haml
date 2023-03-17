@@ -179,34 +179,34 @@
     = form.label :pcf_dqi_temporal_dqr
     = form.number_field :pcf_dqi_temporal_dqr, class: "form-control"
   .form-group.optional
-    = form.label :pcf_dqi_geographical_dqr
+    = form.label :pcf_dqi_geographical_dqr, "PCF dqi geographical dqr"
     = form.number_field :pcf_dqi_geographical_dqr, class: "form-control"
   .form-group.optional
-    = form.label :pcf_dqi_completeness_dqr
+    = form.label :pcf_dqi_completeness_dqr, "PCF dqi completeness dqr"
     = form.number_field :pcf_dqi_completeness_dqr, class: "form-control"
   .form-group.optional
-    = form.label :pcf_dqi_reliability_dqr
+    = form.label :pcf_dqi_reliability_dqr, "PCF dqi reliability dqr"
     = form.number_field :pcf_dqi_reliability_dqr, class: "form-control"
   .form-group.optional
-    = form.label :pcf_assurance_coverage
+    = form.label :pcf_assurance_coverage, "PCF assurancecoverage"
     = form.select :pcf_assurance_level, ["corporate level", "product line", "PCF system", "product level"], {include_blank: true}, {class: "form-select"}
   .form-group.optional
-    = form.label :pcf_assurance_level
+    = form.label :pcf_assurance_level, "PCF assurance level"
     = form.select :pcf_assurance_level, ["limited", "reasonable"], {include_blank: true}, {class: "form-select"}
   .form-group.optional
-    = form.label :pcf_assurance_boundary
+    = form.label :pcf_assurance_boundary, "PCF assurance boundary"
     = form.select :pcf_assurance_boundary, ["Gate-to-Gate", "Cradle-to-Gate"], {include_blank: true}, {class: "form-select"}
   .form-group.optional
-    = form.label :pcf_assurance_provider_name
+    = form.label :pcf_assurance_provider_name, "PCF assurance provider name"
     = form.text_field :pcf_assurance_provider_name, class: "form-control"
   .form-group.optional
-    = form.label :pcf_assurance_completed_at
+    = form.label :pcf_assurance_completed_at, "PCF assurance completed at"
     = form.datetime_field :pcf_assurance_completed_at, class: "form-control"
   .form-group.optional
-    = form.label :pcf_assurance_standard_name
+    = form.label :pcf_assurance_standard_name, "PCF Assurance standard name"
     = form.text_field :pcf_assurance_standard_name, class: "form-control"
   .form-group.optional
-    = form.label :pcf_assurance_comments
+    = form.label :pcf_assurance_comments, "PCF assurance comments"
     = form.text_field :pcf_assurance_comments, class: "form-control"
   .form-group.optional
     = form.label :extensions

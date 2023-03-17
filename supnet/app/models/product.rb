@@ -4,8 +4,6 @@ class Product < ApplicationRecord
   REGIONS = ["Africa", "Americas", "Asia", "Europe", "Oceania", "Australia and New Zealand", "Central Asia", "Eastern Asia", "Eastern Europe", "Latin America and the Caribbean", "Melanesia", "Micronesia", "Northern Africa", "Northern America", "Northern Europe", "Polynesia", "South-eastern Asia", "Southern Asia", "Southern Europe", "Sub-Saharan Africa", "Western Asia", "Western Europe"]
 
   belongs_to :vendor, optional: true
-  # has_many :sources
-  # has_many :nodes, through: :sources
 
   scope :yours, -> { where("vendor_id IS NULL") }
   scope :received, -> { where("vendor_id IS NOT NULL") }
@@ -28,11 +26,11 @@ class Product < ApplicationRecord
     # go through fields, fill in the nested parts
     self.attributes.each do |attribute|
       if attribute[0].include?("pcf_dqi_")
-        dqi[attribute[0]] = attribute[1]
+        dqi[attribute[0].delete_prefix("pcf_dqi_")] = attribute[1]
       elsif attribute[0].include?("pcf_assurance_")
-        assurance[attribute[0]] = attribute[1]
+        assurance[attribute[0].delete_prefix("pcf_assurance_")] = attribute[1]
       elsif attribute[0].include?("pcf_")
-        pcf[attribute[0]] = attribute[1]
+        pcf[attribute[0].delete_prefix("pcf_")] = attribute[1]
       else
         out[attribute[0]] = attribute[1]
       end
@@ -40,6 +38,9 @@ class Product < ApplicationRecord
     pcf[:dqi] = dqi
     pcf[:assurance] = assurance
     out[:pcf] = pcf
+
+    logger.debug "---->about to send this pact: #{out.inspect}"
+
     out
   end
 

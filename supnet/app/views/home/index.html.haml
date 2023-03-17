@@ -1,27 +1,42 @@
-%table{class: "table table-hover"}
-  %tr
-    %td
-      %h4
-        = link_to "Your Vendors", vendors_path
-  %tr
-    %td
-      %h4
-        = link_to "Your Customers", customers_path
-  %tr
-    %td
-      %h4
-        = link_to "Your PCFs to send to customers", products_path(yours: "true")
-  %tr
-    %td
-      %h4
-        = link_to "PCFs you've received from vendors", products_path(received: "true")
-  %tr
-    %td
-      %h4
-        = link_to "All PCFs", products_path
+:css
+  a {text-decoration: none}
 
-  -# %tr
-  -#   %td
-  -#     %h4
-  -#       = link_to "Nodes", nodes_path
+%h2{style: "margin: 95px 0 35px 0;"}
+  Easily send and receive Product Carbon Footprints
 
+%p
+  The PCFer lets you automatically send and receive Product Carbon Footprint
+  (PCF) reports in the standard PACT format. PCFs can be sent between two
+  companies who are both running PCFer, or you can accept them from, or send them
+  to, any system which accepts the common PACT format.
+
+%p
+  To send a PCF to one of your customers, get the API endpoint and key of their
+  software sytem, and create a Customer account for them. Then create your PCF,
+  select the customer, and hit "Send PCF." That's it!
+
+%p
+  To receive PCFs from a vendor, create a Vendor account for them, which creates
+  and API endpoint and unique API key which you can send the vendor. They can
+  then use those to send you a PCF at any time.
+
+-# %table{class: "table table-hover"}
+-#   %tr
+-#     %td
+-#       %h3
+-#         = link_to "Your Vendors", vendors_path
+-#   %tr
+-#     %td
+-#       %h3
+-#         = link_to "Your Customers", customers_path
+-#   %tr
+-#     %td
+-#       %h3
+-#         PCFs
+-#       %ul
+-#         %li
+-#           %h4
+-#             = link_to "To send to your customers", products_path(yours: "true")
+-#         %li
+-#           %h4
+-#             = link_to "Received from your vendors", products_path(received: "true")

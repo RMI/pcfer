@@ -34,7 +34,7 @@ LISTEN_ON=0.0.0.0:8010
 # containers.
 #
 # Everything else is standard Rails configuration for a PostgreSQL database.
-DATABASE_URL=postgresql://supnet:test_db_password@postgres:5432/supnet?encoding=utf8&pool=5&timeout=5000
+DATABASE_URL=postgresql://pcfer:test_db_password@postgres:5432/pcfer?encoding=utf8&pool=5&timeout=5000
 
 
 # Both of these values are using the same Redis address but in a real

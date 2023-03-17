@@ -1,19 +1,16 @@
-%h1{style: "margin-bottom: 50px;"}
+%h1{style: "margin-bottom: 40px;"}
   Your Customers
   %span{style: "margin: -10px 0 10px 50px;"}
     = link_to "New Customer", new_customer_path, class: "btn btn-primary"
 
-%table
-  %thead
+%table{id: "customers", class: "table table-hover"}
+  - @customers.each do |customer|
     %tr
-      %th Name
-      %th Description
-
-  %tbody
-    - @customers.each do |customer|
-      %tr
-        %td= link_to customer.name, customer
-        %td= customer.description
+      %td
+        %h4
+          = link_to customer.name, customer
+        %div
+          = customer.description
 
 
 %br
