@@ -18,13 +18,13 @@ This repo runs four containers, two postgres DBs, and two rails app--independed 
 
 2. Clone this repo
 ```
-git clone https://github.com/john/supnet.git
+git clone https://github.com/rmi/pcfer.git
 ```
 
-3. cd into repo and build images:
+3. cd into repo and build images. The app was originally name supnet and the Rails app retains that name; until that gets changed (soon) the volume needs to retain it.
 
 ```
-cd supnet
+cd pcfer
 docker build -t pcfer-toolbox -f Dockerfile.rails .
 
 docker volume create --name seller-postgres
@@ -42,8 +42,8 @@ docker compose up --build
 
 ```
 docker ps
-docker exec -t -i supnet-seller-pcfer-1 /bin/bas
-docker exec -t -i supnet-buyer-pcfer-1 /bin/bash
+docker exec -t -i pcfer-seller-pcfer-1 /bin/bash
+docker exec -t -i pcfer-buyer-pcfer-1 /bin/bash
 ```
 
 6. After building for the first time you'll see you need to create the databases. ctl-c, then run:
@@ -61,17 +61,23 @@ docker compose up
 
 You should then be able to hit it at http://localhost:3000, and just run `docker compose up` any time you want to start the app+db container
 
-### Connecting to the database
+## Connecting to the database
 `psql --host=localhost --username=pcfer --port=6544 --dbname=pcfer`
 
 buyer's db port is 6544, seller's is 6543 (mapped in both cases to the standard postgresql on the container side)
 
-### CURL
+## CURL
 To send PCF data via command line. The API key should be the one supplied by the Vendor.
 
 `curl -v -H 'Content-Type: application/json' -H 'X-API-Key: sk_J8HcZp4OJxS3Rq4EdwVGdg' -d "@test_pact.json" -X POST http://localhost:3000/products.json`
 
-### Sources
+## Sources
 
-A lot of the docker setup was taken from:
+Portions of the docker setup were taken from:
 https://semaphoreci.com/community/tutorials/dockerizing-a-ruby-on-rails-application
+
+## License
+Copyright (c) 2023 John McGrath (jmcgrath@rmi.org) and [RMI](https://rmi.org). See [LICENSE][] for
+details.
+
+[license]: LICENSE.md

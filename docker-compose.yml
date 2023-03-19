@@ -49,4 +49,4 @@ services:
 volumes:
   seller-postgres:
   buyer-postgres:
-  supnet:
+  pcfer:

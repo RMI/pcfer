@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
   devise_for :users
-  root "home#index"
+  # unauthenticated do
+  #   root :to => 'home#index'
+  # end
 
-  # get 'home/index'
+  root "home#index"
 
   resources :products do
     post :send_pcf, on: :member

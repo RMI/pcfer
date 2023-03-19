@@ -1,4 +1,5 @@
 class VendorsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_vendor, only: %i[ show edit update destroy ]
 
   # GET /vendors or /vendors.json

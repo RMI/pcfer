@@ -1,4 +1,4 @@
-FROM ruby:3.2.1 AS supnet-development
+FROM ruby:3.2.1 AS pcfer-development
 
 # Install yarn
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg -o /root/yarn-pubkey.gpg && apt-key add /root/yarn-pubkey.gpg

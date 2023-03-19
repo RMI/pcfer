@@ -5,8 +5,9 @@ ruby "3.2.1"
 
 gem 'countries', require: 'countries/global'
 gem 'devise'
-gem 'faraday'
-gem 'haml-rails'
+gem 'devise_invitable', '~> 2.0.0'
+# gem 'faraday'
+gem 'haml-rails', '~> 2.0'
 gem 'httparty'
 gem 'omniauth'
 gem 'omniauth-rails_csrf_protection'

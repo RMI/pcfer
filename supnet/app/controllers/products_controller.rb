@@ -1,4 +1,5 @@
 class ProductsController < ApplicationController
+  # before_action :authenticate_user!
   before_action :set_product, only: %i[ show send_pcf edit update destroy ]
   skip_before_action :verify_authenticity_token
 
