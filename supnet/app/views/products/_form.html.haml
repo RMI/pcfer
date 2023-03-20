@@ -113,11 +113,13 @@
     = form.label :pcf_characterization_factors, "PCF characterization factors <sup>*</sup>".html_safe
     = form.select :pcf_characterization_factors, ["AR5", "AR6"], {include_blank: '-- Select One --'}, {class: "form-select" , required: true}
 
+
   .form-group
     = form.label :pcf_cross_sectoral_standards_used, "PCF cross sectoral standards used <sup>*</sup>".html_safe
     -# = form.text_field :pcf_cross_sectoral_standards_used, class: "form-control"
     -# = select_tag 'product[pcf_cross_sectoral_standards_used]', options_for_select([ "GHG Protocol Product standard", "ISO Standard 14067", "ISO Standard 14044" ]), {multiple: true, class: "form-select"}
     = form.select :pcf_cross_sectoral_standards_used, options_for_select([ "GHG Protocol Product standard", "ISO Standard 14067", "ISO Standard 14044" ]), {}, {multiple: true, class: "form-select"}
+
 
   .form-group.optional
     = form.label :pcf_product_or_sector_specific_rules
@@ -189,7 +191,7 @@
     = form.number_field :pcf_dqi_reliability_dqr, class: "form-control"
   .form-group.optional
     = form.label :pcf_assurance_coverage, "PCF assurancecoverage"
-    = form.select :pcf_assurance_level, ["corporate level", "product line", "PCF system", "product level"], {include_blank: true}, {class: "form-select"}
+    = form.select :pcf_assurance_coverage, ["corporate level", "product line", "PCF system", "product level"], {include_blank: true}, {class: "form-select"}
   .form-group.optional
     = form.label :pcf_assurance_level, "PCF assurance level"
     = form.select :pcf_assurance_level, ["limited", "reasonable"], {include_blank: true}, {class: "form-select"}

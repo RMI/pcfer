@@ -14,6 +14,10 @@ require 'rails_helper'
 
 RSpec.describe "/vendors", type: :request do
   
+  before(:all) do
+    @user1 = create(:user)
+  end
+
   # This should return the minimal set of attributes required to create a valid
   # Vendor. As you add validations to Vendor, be sure to
   # adjust the attributes here as well.
@@ -42,7 +46,14 @@ RSpec.describe "/vendors", type: :request do
   end
 
   describe "GET /new" do
-    it "renders a successful response" do
+    it "renders a redirect with no sign in" do
+      get new_vendor_url
+      expect(response).to have_http_status(302)
+    end
+
+    it "renders a successful response when signed in" do
+      sign_in @user
+
       get new_vendor_url
       expect(response).to be_successful
     end

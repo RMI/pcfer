@@ -13,6 +13,10 @@ require 'rails_helper'
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
 RSpec.describe "/customers", type: :request do
+
+  before(:all) do
+    @user = create(:user)
+  end
   
   # This should return the minimal set of attributes required to create a valid
   # Customer. As you add validations to Customer, be sure to
@@ -26,7 +30,15 @@ RSpec.describe "/customers", type: :request do
   }
 
   describe "GET /index" do
-    it "renders a successful response" do
+    it "renders a redirect with no sign in" do
+      Customer.create! valid_attributes
+      get customers_url
+      expect(response).to have_http_status(302)
+    end
+
+    it "renders a successful response when signed in" do
+      sign_in @user
+
       Customer.create! valid_attributes
       get customers_url
       expect(response).to be_successful
@@ -42,14 +54,31 @@ RSpec.describe "/customers", type: :request do
   end
 
   describe "GET /new" do
-    it "renders a successful response" do
+    it "renders a redirect with no sign in" do
+      get new_customer_url
+      expect(response).to have_http_status(302)
+    end
+  end
+
+  describe "GET /new" do
+    it "renders a successful response when signed in" do
+      sign_in @user
+
       get new_customer_url
       expect(response).to be_successful
     end
   end
 
   describe "GET /edit" do
-    it "renders a successful response" do
+    it "renders a redirect with no sign in" do
+      customer = Customer.create! valid_attributes
+      get edit_customer_url(customer)
+      expect(response).to have_http_status(302)
+    end
+
+    it "renders a successful response when signed in" do
+      sign_in @user
+
       customer = Customer.create! valid_attributes
       get edit_customer_url(customer)
       expect(response).to be_successful

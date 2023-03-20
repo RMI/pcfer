@@ -112,6 +112,9 @@ class ProductsController < ApplicationController
             pcf_params = param[1]{}
             pcf_params.each do |pcf_param|
 
+              # I think we may have to deal with fields that are stored as JSON strings
+              # differently, like pcf_cross_sectoral_standards_used and pcf_product_or_sector_specific_rules
+
               # deal with dqi
               if pcf_param[0] == "dqi"
                 dqi_params = pcf_param[1]
