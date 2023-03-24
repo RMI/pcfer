@@ -2,7 +2,7 @@
 
 ## Intro
 
-PCFer is a reference app to handle supply-chain PCF requests in an automated, machine-readable way. It lets you both create digital PCF files to send to customers, and to receive them from vendors.
+PCFer is a reference app to handle supply-chain PCF requests in an automated, machine-readable way, created by RMI's [Climate Intelligence Program](https://rmi.org/our-work/climate-intelligence/). It lets you both create digital PCF files to send to customers, and to receive them from vendors.
 
 It uses the [PACT format for product-level greenhouse gas emissions](https://wbcsd.github.io/data-exchange-protocol/v2/), created by the WBCSD's [Pathfinder Network](https://www.wbcsd.org/Programs/Climate-and-Energy/Climate/SOS-1.5/Resources/Pathfinder-Framework-Guidance-for-the-Accounting-and-Exchange-of-Product-Life-Cycle-Emissions) with input from [RMI](https://rmi.org).
 
