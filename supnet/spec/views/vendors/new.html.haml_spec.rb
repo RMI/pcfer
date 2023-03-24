@@ -4,7 +4,7 @@ RSpec.describe "vendors/new", type: :view do
   before(:each) do
     assign(:vendor, Vendor.new(
       name: "MyString",
-      email: "MyString",
+      email: "email@test.com",
       description: "MyText",
       api_endpoint: "MyString",
       api_key: "MyString"

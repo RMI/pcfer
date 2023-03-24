@@ -86,6 +86,10 @@ GEM
     countries (5.3.1)
       unaccent (~> 0.3)
     crass (1.0.6)
+    database_cleaner-active_record (2.1.0)
+      activerecord (>= 5.a)
+      database_cleaner-core (~> 2.0.0)
+    database_cleaner-core (2.0.1)
     date (3.3.3)
     debug (1.7.1)
     devise (4.9.0)
@@ -286,6 +290,7 @@ DEPENDENCIES
   bootsnap
   capybara
   countries
+  database_cleaner-active_record
   debug
   devise
   devise_invitable (~> 2.0.0)

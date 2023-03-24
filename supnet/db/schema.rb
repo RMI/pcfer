@@ -29,7 +29,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_18_182549) do
     t.string "original_id"
     t.uuid "vendor_id"
     t.string "spec_version"
-    t.string "preceding_pf_ids"
+    t.string "preceding_pf_ids", default: [], array: true
+    t.string "scopes_included", default: [], array: true
     t.integer "version"
     t.datetime "created"
     t.datetime "updated"
@@ -58,8 +59,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_18_182549) do
     t.decimal "pcf_biogenic_carbon_withdrawal"
     t.decimal "pcf_aircraft_ghg_emissions"
     t.string "pcf_characterization_factors"
-    t.string "pcf_cross_sectoral_standards_used"
-    t.string "pcf_product_or_sector_specific_rules"
+    t.string "pcf_cross_sectoral_standards_used", default: [], array: true
+    t.string "pcf_product_or_sector_specific_rules", default: [], array: true
     t.string "pcf_biogenic_accounting_methodology"
     t.string "pcf_boundary_processes_description"
     t.datetime "pcf_reference_period_start"

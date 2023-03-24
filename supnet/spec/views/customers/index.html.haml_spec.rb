@@ -4,15 +4,15 @@ RSpec.describe "customers/index", type: :view do
   before(:each) do
     assign(:customers, [
       Customer.create!(
-        name: "Name",
-        email: "Email",
+        name: "Name1",
+        email: "Email1@test.com",
         description: "MyText",
         api_endpoint: "Api Endpoint",
         api_key: "Api Key"
       ),
       Customer.create!(
-        name: "Name",
-        email: "Email",
+        name: "Name2",
+        email: "Email2@test.com",
         description: "MyText",
         api_endpoint: "Api Endpoint",
         api_key: "Api Key"

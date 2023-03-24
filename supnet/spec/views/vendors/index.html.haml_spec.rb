@@ -4,15 +4,15 @@ RSpec.describe "vendors/index", type: :view do
   before(:each) do
     assign(:vendors, [
       Vendor.create!(
-        name: "Name",
-        email: "Email",
+        name: "Name1",
+        email: "Email1@test.com",
         description: "MyText",
         api_endpoint: "Api Endpoint",
         api_key: "Api Key"
       ),
       Vendor.create!(
-        name: "Name",
-        email: "Email",
+        name: "Name2",
+        email: "Email2@test.com",
         description: "MyText",
         api_endpoint: "Api Endpoint",
         api_key: "Api Key"

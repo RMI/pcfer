@@ -44,9 +44,9 @@
 %br/
 
 .btn-toolbar{role: "toolbar", "aria-label": "Toolbar with button groups"}
-  = link_to "Edit", edit_vendor_path(@vendor), class: "btn btn-primary"
+  = link_to "Edit", edit_vendor_path(@vendor), class: "btn btn-outline-primary btn-sm"
   &nbsp;
-  = button_to "Destroy this vendor", @vendor, method: :delete, class: "btn btn-danger", onclick: "return confirm('Estas seguro? This will also destroy all PCFs associated with this vendor.');"
+  = button_to "Destroy this vendor", @vendor, method: :delete, class: "btn btn-outline-danger btn-sm", onclick: "return confirm('Estas seguro? This will also destroy all PCFs associated with this vendor.');"
 
 %br/
 %br/

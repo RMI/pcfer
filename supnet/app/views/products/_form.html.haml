@@ -30,12 +30,19 @@
   .form-group.optional
     = form.label :preceding_pf_ids, "Preceding product footprint identifiers"
     = form.text_field :preceding_pf_ids, class: "form-control"
+
+  .form-group.optional
+    = form.label :scopes_included, "Scopes included"
+    %ul
+      - ["1", "2", "3"].each do |scope|
+        %li
+          = check_box_tag "product[scopes_included][]", scope, product.scopes_included.include?(scope), id: "scopes_included_#{scope}"
+          = scope
+
+
   .form-group
     = form.label :version, "Version <sup>*</sup>".html_safe
     = form.number_field :version, class: "form-control", required: true
-  -# .form-group
-  -#   = form.label :vendor_id, "Vendor ID".html_safe
-  -#   = form.text_field :vendor_id, class: "form-control"
   .form-group
     = form.label :status, "Status <sup>*</sup>".html_safe
     = form.select :status, ["Active", "Deprecated"], {include_blank: '-- Select One --'}, {class: "form-select" , required: true}
@@ -113,18 +120,13 @@
     = form.label :pcf_characterization_factors, "PCF characterization factors <sup>*</sup>".html_safe
     = form.select :pcf_characterization_factors, ["AR5", "AR6"], {include_blank: '-- Select One --'}, {class: "form-select" , required: true}
 
-
   .form-group
     = form.label :pcf_cross_sectoral_standards_used, "PCF cross sectoral standards used <sup>*</sup>".html_safe
-    -# = form.text_field :pcf_cross_sectoral_standards_used, class: "form-control"
-    -# = select_tag 'product[pcf_cross_sectoral_standards_used]', options_for_select([ "GHG Protocol Product standard", "ISO Standard 14067", "ISO Standard 14044" ]), {multiple: true, class: "form-select"}
-    = form.select :pcf_cross_sectoral_standards_used, options_for_select([ "GHG Protocol Product standard", "ISO Standard 14067", "ISO Standard 14044" ]), {}, {multiple: true, class: "form-select"}
-
+    = form.select :pcf_cross_sectoral_standards_used, options_for_select([ "GHG Protocol Product standard", "ISO Standard 14067", "ISO Standard 14044" ], product.pcf_cross_sectoral_standards_used), {include_hidden: false}, {multiple: true, include_blank: false, class: "form-select"}
 
   .form-group.optional
     = form.label :pcf_product_or_sector_specific_rules
-    -# = form.text_field :pcf_product_or_sector_specific_rules, class: "form-control"
-    = form.select :pcf_product_or_sector_specific_rules, options_for_select([ "PEF", "EPD International", "Other" ]), {}, {multiple: true, class: "form-select"}
+    = form.select :pcf_product_or_sector_specific_rules, options_for_select([ "PEF", "EPD International", "Other" ], product.pcf_product_or_sector_specific_rules), {}, {multiple: true, include_blank: false, class: "form-select"}
 
   .form-group.optional
     = form.label :pcf_biogenic_accounting_methodology

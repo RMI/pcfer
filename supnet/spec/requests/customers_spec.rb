@@ -17,12 +17,12 @@ RSpec.describe "/customers", type: :request do
   before(:all) do
     @user = create(:user)
   end
-  
+
   # This should return the minimal set of attributes required to create a valid
   # Customer. As you add validations to Customer, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    {email: 'testy@test.com', name: "Testy McTesterson"}
   }
 
   let(:invalid_attributes) {
@@ -31,26 +31,45 @@ RSpec.describe "/customers", type: :request do
 
   describe "GET /index" do
     it "renders a redirect with no sign in" do
-      Customer.create! valid_attributes
+      customer = create(:customer)
+
       get customers_url
       expect(response).to have_http_status(302)
     end
 
     it "renders a successful response when signed in" do
       sign_in @user
+      customer = create(:customer)
 
-      Customer.create! valid_attributes
       get customers_url
       expect(response).to be_successful
     end
   end
 
   describe "GET /show" do
-    it "renders a successful response" do
-      customer = Customer.create! valid_attributes
+    it "renders a redirect with no sign in" do
+      customer = create(:customer)
+
+      get customer_url(customer)
+      expect(response).to have_http_status(302)
+    end
+
+    it "renders a successful response when signed in and customer exists" do
+      sign_in @user
+      customer = create(:customer)
+
       get customer_url(customer)
       expect(response).to be_successful
     end
+
+    # it "renders a successful response when signed in and customer exists" do
+    #   sign_in @user
+    #   # customer = Customer.create! valid_attributes
+    #   customer = create(:customer)
+
+    #   get customer_url(customer)
+    #   expect(response).to be_successful
+    # end
   end
 
   describe "GET /new" do
@@ -58,9 +77,7 @@ RSpec.describe "/customers", type: :request do
       get new_customer_url
       expect(response).to have_http_status(302)
     end
-  end
 
-  describe "GET /new" do
     it "renders a successful response when signed in" do
       sign_in @user
 
@@ -71,15 +88,16 @@ RSpec.describe "/customers", type: :request do
 
   describe "GET /edit" do
     it "renders a redirect with no sign in" do
-      customer = Customer.create! valid_attributes
+      customer = create(:customer)
+
       get edit_customer_url(customer)
       expect(response).to have_http_status(302)
     end
 
     it "renders a successful response when signed in" do
       sign_in @user
+      customer = create(:customer)
 
-      customer = Customer.create! valid_attributes
       get edit_customer_url(customer)
       expect(response).to be_successful
     end
@@ -87,15 +105,25 @@ RSpec.describe "/customers", type: :request do
 
   describe "POST /create" do
     context "with valid parameters" do
-      it "creates a new Customer" do
+      it "creates a new Customer when signed in" do
+        sign_in @user
+
         expect {
           post customers_url, params: { customer: valid_attributes }
         }.to change(Customer, :count).by(1)
       end
 
       it "redirects to the created customer" do
+        sign_in @user
+
         post customers_url, params: { customer: valid_attributes }
         expect(response).to redirect_to(customer_url(Customer.last))
+      end
+
+      it "fails to create a new Customer when not signed in" do
+        expect {
+          post customers_url, params: { customer: valid_attributes }
+        }.to change(Customer, :count).by(0)
       end
     end
 
@@ -106,20 +134,26 @@ RSpec.describe "/customers", type: :request do
         }.to change(Customer, :count).by(0)
       end
 
-    
       it "renders a response with 422 status (i.e. to display the 'new' template)" do
         post customers_url, params: { customer: invalid_attributes }
         expect(response).to have_http_status(:unprocessable_entity)
       end
-    
+
     end
   end
 
   describe "PATCH /update" do
     context "with valid parameters" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        {email: 'testy_new@test.com', name: "New Testy McTesterson"}
       }
+
+      it "fails to update the requested customer when not signed in" do
+        customer = Customer.create! valid_attributes
+        patch customer_url(customer), params: { customer: new_attributes }
+        customer.reload
+        skip("Add assertions for failed update state")
+      end
 
       it "updates the requested customer" do
         customer = Customer.create! valid_attributes
@@ -129,6 +163,8 @@ RSpec.describe "/customers", type: :request do
       end
 
       it "redirects to the customer" do
+        skip("Add a hash of attributes valid for your model")
+
         customer = Customer.create! valid_attributes
         patch customer_url(customer), params: { customer: new_attributes }
         customer.reload
@@ -137,25 +173,39 @@ RSpec.describe "/customers", type: :request do
     end
 
     context "with invalid parameters" do
-    
+
       it "renders a response with 422 status (i.e. to display the 'edit' template)" do
+        skip("Add a hash of attributes valid for your model")
+
         customer = Customer.create! valid_attributes
         patch customer_url(customer), params: { customer: invalid_attributes }
         expect(response).to have_http_status(:unprocessable_entity)
       end
-    
+
     end
   end
 
   describe "DELETE /destroy" do
-    it "destroys the requested customer" do
+    it "destroys the requested customer when signed in" do
+      sign_in @user
       customer = Customer.create! valid_attributes
+
       expect {
         delete customer_url(customer)
       }.to change(Customer, :count).by(-1)
     end
 
+    it "fails to destroy the requested customer when not signed in" do
+      customer = Customer.create! valid_attributes
+
+      expect {
+        delete customer_url(customer)
+      }.to change(Customer, :count).by(0)
+    end
+
     it "redirects to the customers list" do
+      skip("Add a hash of attributes valid for your model")
+
       customer = Customer.create! valid_attributes
       delete customer_url(customer)
       expect(response).to redirect_to(customers_url)

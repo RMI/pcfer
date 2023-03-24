@@ -1,7 +1,7 @@
 = render "shared/product_nav"
 
 -# This sends this product's json data to the API endpoint of customer chosen, using their API key
--# in these demos it's on the same system, but it typically won't be.actions
+-# in these demos it's on the same system, but it typically won't be.
 
 -# So we have a customer and a product on this end.
 -# on the other end, if they were running this same software, there would be a Vendor object, who supplied the API endpoint & key?
@@ -24,7 +24,6 @@
     %div{style: "margin: 0 0 0 10px;"}
       Send to
 
-
     %form{id: "pcf_send_form"}
       %table{style: "width: 100%; max-width:500px;"}
         %tr
@@ -40,8 +39,6 @@
 
     :javascript
       $( "#pcf_send_form" ).submit(function( event ) {
-        console.log("foo");
-        console.log( $(this).serialize() );
         $.ajax({
           type: "POST",
           url: '#{send_pcf_product_url(@product, format: :json)}',
@@ -73,6 +70,5 @@
   = link_to "View json", product_path(@product, format: :json), class: "btn btn-outline-primary btn-sm"
   &nbsp;
   = button_to "Destroy this product", @product, method: :delete, class: "btn btn-outline-danger btn-sm", onclick: "return confirm('This can never, ever be undone.');"
-
 
 %br/

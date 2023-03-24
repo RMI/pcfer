@@ -5,6 +5,8 @@ class ProductsController < ApplicationController
 
   # GET /products or /products.json
   def index
+    authenticate_user!
+
     @title = "PCFs"
 
     @products = case
@@ -23,8 +25,14 @@ class ProductsController < ApplicationController
   def show
     @title = "PCF"
     respond_to do |format|
-      format.html { render :show }
+      format.html {
+        authenticate_user!
+
+        render :show
+      }
       format.json do
+
+        # TODO: How should this be authenticated?
 
         # # THIS should be DRYed up-----
         # @top={}
@@ -67,6 +75,8 @@ class ProductsController < ApplicationController
 
   # GET /products/new
   def new
+    authenticate_user!
+
     @title = "New PCF"
     @product = Product.new
   end
@@ -232,7 +242,9 @@ class ProductsController < ApplicationController
         :pcf_dqi_geographical_dqr, :pcf_dqi_completeness_dqr, :pcf_dqi_reliability_dqr,
         :pcf_assurance_coverage, :pcf_assurance_level, :pcf_assurance_boundary, :pcf_assurance_provider_name,
         :pcf_assurance_completed_at, :pcf_assurance_standard_name, :pcf_assurance_comments, :extensions,
-        pcf_cross_sectoral_standards_used: [], pcf_product_or_sector_specific_rules: []
+        pcf_cross_sectoral_standards_used: [],
+        pcf_product_or_sector_specific_rules: [],
+        scopes_included: []
       )
     end
 end

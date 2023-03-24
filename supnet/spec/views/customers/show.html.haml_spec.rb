@@ -4,7 +4,7 @@ RSpec.describe "customers/show", type: :view do
   before(:each) do
     assign(:customer, Customer.create!(
       name: "Name",
-      email: "Email",
+      email: "Email@test.com",
       description: "MyText",
       api_endpoint: "Api Endpoint",
       api_key: "Api Key"

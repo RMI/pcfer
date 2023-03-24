@@ -4,7 +4,7 @@ RSpec.describe "vendors/edit", type: :view do
   let(:vendor) {
     Vendor.create!(
       name: "MyString",
-      email: "MyString",
+      email: "test@test.com",
       description: "MyText",
       api_endpoint: "MyString",
       api_key: "MyString"

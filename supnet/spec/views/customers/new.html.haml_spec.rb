@@ -4,7 +4,7 @@ RSpec.describe "customers/new", type: :view do
   before(:each) do
     assign(:customer, Customer.new(
       name: "MyString",
-      email: "MyString",
+      email: "test@test.com",
       description: "MyText",
       api_endpoint: "MyString",
       api_key: "MyString"

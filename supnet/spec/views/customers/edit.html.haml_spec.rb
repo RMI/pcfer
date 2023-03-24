@@ -4,7 +4,7 @@ RSpec.describe "customers/edit", type: :view do
   let(:customer) {
     Customer.create!(
       name: "MyString",
-      email: "MyString",
+      email: "test@test.com",
       description: "MyText",
       api_endpoint: "MyString",
       api_key: "MyString"
@@ -17,7 +17,7 @@ RSpec.describe "customers/edit", type: :view do
 
   it "renders the edit customer form" do
     skip
-    
+
     # render
 
     # assert_select "form[action=?][method=?]", customer_path(customer), "post" do
