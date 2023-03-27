@@ -2,7 +2,7 @@
 
 ## Intro
 
-PCFer is a reference application to allow the exchange of product-level carbon emissions data in an automated, machine-readable way. It lets you both create digital Product Carbon Footprint (PCF) files to send to customers, and to receive them from vendors.
+PCFer is a reference application to allow the exchange of product-level carbon emissions data in an automated, machine-readable way over the Internet, in a standardized format. It lets you both create digital Product Carbon Footprint (PCF) files to send to customers, and to receive them from vendors.
 
 Importantly, PCFs can be exchanged between this app, and any other application or system that supports the open-source [PACT standard](https://wbcsd.github.io/data-exchange-protocol/v2/). Because it uses a standard and open format for emissions data, and exchanges it over HTTP, neither sender nor receiver needs to know details of the system on the other side, other than that it supports the same format. 
 
