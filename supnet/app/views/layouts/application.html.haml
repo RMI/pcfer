@@ -23,15 +23,26 @@
   %body
 
     - bg = request.host == "seller" ? "dark" : "light"
-    - company = request.host == "seller" ? "Ace Aluminum" : "Acme Automobiles"
 
-    %nav{class: "navbar navbar-expand-md navbar-#{bg} bg-#{bg}"}
+    - if request.host.include?("anbaric")
+      - company = "Anbaric Aluminum"
+      - color = "bg-primary"
+    - elsif request.host.include?("stellar")
+      - company = "Stellar Steel"
+      - color = "bg-secondary"
+    - elsif request.host.include?("flow")
+      - company = "Flow Fabrication"
+      - color = "bg-success"
+    - else
+      - company = "Acme Automobiles"
+      - color = "bg-danger"
+
+    %nav{class: "navbar navbar-expand-md navbar-dark #{color}"}
       .container-fluid
-        = link_to "#{company} (#{request.host})", root_path, class: "navbar-brand", style: "margin-left: 25px;"
+        = link_to "#{company}", root_path, class: "navbar-brand", style: "margin-left: 25px;"
 
         %button{class: "navbar-toggler", type: "button", "data-bs-toggle": "collapse", "data-bs-target": "#navbarSupportedContent", style: "margin-right: 20px;", "aria-controls": "navbarSupportedContent", "aria-expanded": "false", "aria-label": "Toggle navigation"}
           %span{class: "navbar-toggler-icon"}
-
 
         %div{class: "collapse navbar-collapse", id: "navbarSupportedContent"}
           %ul{class: "navbar-nav mr-auto"}

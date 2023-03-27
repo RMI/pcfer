@@ -2,7 +2,17 @@ version: "3.9"
 
 services:
 
-  seller-postgres:
+  seller1-postgres:
+    image: postgres:15.2
+    environment:
+      POSTGRES_USER: pcfer
+      POSTGRES_PASSWORD: test_db_password
+    ports:
+      - '6542:5432'
+    volumes:
+      - seller1-postgres:/var/lib/postgresql/data
+
+  seller2-postgres:
     image: postgres:15.2
     environment:
       POSTGRES_USER: pcfer
@@ -10,21 +20,9 @@ services:
     ports:
       - '6543:5432'
     volumes:
-      - seller-postgres:/var/lib/postgresql/data
+      - seller2-postgres:/var/lib/postgresql/data
 
-  seller-pcfer:
-    build:
-      context: .
-    volumes:
-      - ./supnet:/opt/app
-    links:
-      - seller-postgres
-    ports:
-      - '3030:3000'
-    env_file:
-      - .seller.env
-
-  buyer-postgres:
+  buyer1-postgres:
     image: postgres:15.2
     environment:
       POSTGRES_USER: pcfer
@@ -32,21 +30,69 @@ services:
     ports:
       - '6544:5432'
     volumes:
-      - buyer-postgres:/var/lib/postgresql/data
+      - buyer1-postgres:/var/lib/postgresql/data
 
-  buyer-pcfer:
+  buyer2-postgres:
+    image: postgres:15.2
+    environment:
+      POSTGRES_USER: pcfer
+      POSTGRES_PASSWORD: test_db_password
+    ports:
+      - '6545:5432'
+    volumes:
+      - buyer2-postgres:/var/lib/postgresql/data
+
+  seller1-pcfer:
     build:
       context: .
     volumes:
       - ./supnet:/opt/app
     links:
-      - buyer-postgres
+      - seller1-postgres
     ports:
       - '3000:3000'
     env_file:
-      - .buyer.env
+      - .pcf_seller1.env
+
+  seller2-pcfer:
+    build:
+      context: .
+    volumes:
+      - ./supnet:/opt/app
+    links:
+      - seller2-postgres
+    ports:
+      - '3030:3000'
+    env_file:
+      - .pcf_seller2.env
+
+  buyer1-pcfer:
+    build:
+      context: .
+    volumes:
+      - ./supnet:/opt/app
+    links:
+      - buyer1-postgres
+    ports:
+      - '3060:3000'
+    env_file:
+      - .pcf_buyer1.env
+
+  buyer2-pcfer:
+    build:
+      context: .
+    volumes:
+      - ./supnet:/opt/app
+    links:
+      - buyer2-postgres
+    ports:
+      - '3090:3000'
+    env_file:
+      - .pcf_buyer2.env
 
 volumes:
-  seller-postgres:
-  buyer-postgres:
+  seller1-postgres:
+  seller2-postgres:
+  buyer1-postgres:
+  buyer2-postgres:
   pcfer:

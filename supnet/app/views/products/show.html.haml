@@ -19,7 +19,17 @@
 %div
   Created #{@product.created.strftime("%b %-d, %Y, at %-I:%M%P")}
 
-- if @product.vendor_id.blank?
+- if @product.preceding_pf_ids.present?
+  %div{style: "margin-top: 20px;"}
+    PCFs rolling up into this one:
+    %ul
+      -# HACK. using originally ids doesn't really work
+      - @product.preceding_pf_ids.each do |pcfid|
+        %li
+          - if product = Product.find_by_original_id(pcfid)
+            = link_to product.product_name_company, product_path(product)
+
+- if @product.vendor_id.blank? # means it's a PCF you created, rather than one you received
   %div{style: "border: 0px solid grey; margin: 20px 0 30px 0; padding: 10px 10px 10px 0;"}
     %div{style: "margin: 0 0 0 10px;"}
       Send to
@@ -44,7 +54,8 @@
           url: '#{send_pcf_product_url(@product, format: :json)}',
           data: $("#pcf_send_form").serialize(),
           success: function(data) {
-            // Ajax call completed successfully
+            // Successfully posted PCF and precedings
+
 
             alert("Form Submited Successfully");
           },

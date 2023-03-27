@@ -14,6 +14,7 @@
   }
 
 = form_with(model: product) do |form|
+
   - if product.errors.any?
     %div{:style => "color: red"}
       %h2
@@ -28,18 +29,16 @@
     =link_to "show/hide required", "#", onclick: "toggle('optional');"
 
   .form-group.optional
-    = form.label :preceding_pf_ids, "Preceding product footprint identifiers"
-    = form.text_field :preceding_pf_ids, class: "form-control"
+    = form.label :preceding_pf_ids, "Preceding PFCs"
+    = form.select :preceding_pf_ids, options_for_select( Product.all.map{|p| [p.product_name_company, p.id] }, @product.preceding_pf_ids), {include_hidden: false}, {multiple: true, include_blank: false, class: "form-select"}
 
   .form-group.optional
     = form.label :scopes_included, "Scopes included"
-    %ul
+    %ul.list-group.list-group-horizontal
       - ["1", "2", "3"].each do |scope|
-        %li
+        %li.list-group-item
           = check_box_tag "product[scopes_included][]", scope, product.scopes_included.include?(scope), id: "scopes_included_#{scope}"
           = scope
-
-
   .form-group
     = form.label :version, "Version <sup>*</sup>".html_safe
     = form.number_field :version, class: "form-control", required: true

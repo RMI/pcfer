@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   resources :products do
     post :send_pcf, on: :member
+    get :rectify, on: :member
   end
   resources :vendors
   resources :customers

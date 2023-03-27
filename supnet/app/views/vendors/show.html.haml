@@ -1,13 +1,15 @@
 = render "shared/vendor_nav"
 
-%div
-  %b Name:
+%h1
   = @vendor.name
-  (<span class="id">#{link_to 'ID', '#', onclick: "$('.id').fadeToggle();"}</span><span class="id" style="display: none;">#{@vendor.id}</span>)
 
 %div
   %b Email:
   = @vendor.email
+
+%div
+  %b ID:
+  = @vendor.id
 
 - if @vendor.email_message.present?
   %div
@@ -16,18 +18,19 @@
 
 - if @vendor.description.present?
   %div
-    %br/
     %b Description:
     = @vendor.description
+
 %div
-  <span class="api">#{link_to 'API Info', '#', onclick: "$('.api').fadeToggle();"}</span>
+  <span class="api">#{link_to "API Info to provide #{@vendor.name}", '#', onclick: "$('.api').fadeToggle();"}</span>
   .api{style: "display: none; padding: 10px; margin: 15px 0 15px 0; border: 1px solid grey;"}
-    Instructions: POST PACT-formatted JSON to the endpoint, with the API key in the header of the request.
+    Instructions: Tell this vendor to POST PACT-formatted JSON to the endpoint below, with their API key, also below, in the header of the request.
     %br/
     %br/
     %div
-      %b API endpoint
-      http://host.docker.internal:3000/products.json
+      %b API endpoint:
+      http://host.docker.internal:#{request.port}/products.json
+      -# = @vendor.api_endpoint
     %div
       %b API key:
       = @vendor.api_key

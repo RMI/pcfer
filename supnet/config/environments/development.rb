@@ -1,8 +1,10 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-  config.hosts << 'buyer'
-  config.hosts << 'seller'
+  config.hosts << 'anbaric'
+  config.hosts << 'stellar'
+  config.hosts << 'flow'
+  config.hosts << 'acme'
   config.hosts << 'host.docker.internal'
 
   # Settings specified here will take precedence over those in config/application.rb.

@@ -6,11 +6,8 @@
 %table{id: "customers", class: "table table-hover"}
   - @customers.each do |customer|
     %tr
-      %td
-        %h4
-          = link_to customer.name, customer
-        %div
-          = customer.description
+      %td{style: "padding-right: 25px;"}
+        = link_to customer.name, customer
 
 
 %br

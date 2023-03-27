@@ -33,8 +33,10 @@ git clone https://github.com/rmi/pcfer.git
 cd pcfer
 docker build -t pcfer-toolbox -f Dockerfile.rails .
 
-docker volume create --name seller-postgres
-docker volume create --name buyer-postgres
+docker volume create --name seller1-postgres
+docker volume create --name seller2-postgres
+docker volume create --name buyer1-postgres
+docker volume create --name buyer2-postgres
 docker volume create --name supnet
 ```
 
@@ -53,8 +55,10 @@ docker ps
 which will probably return, in the NAMES column, the values `pcfer-seller-pcfer-1` and `pcfer-buyer-pcfer-1`. Instert those, or the equivalent values from your system, like this, to shell into each container:
 
 ```
-docker exec -t -i pcfer-seller-pcfer-1 /bin/bash
-docker exec -t -i pcfer-buyer-pcfer-1 /bin/bash
+docker exec -t -i pcfer-seller1-pcfer-1 /bin/bash
+docker exec -t -i pcfer-seller2-pcfer-1 /bin/bash
+docker exec -t -i pcfer-buyer1-pcfer-1 /bin/bash
+docker exec -t -i pcfer-buyer2-pcfer-1 /bin/bash
 ```
 
 7. After building for the first time you'll see you need to create the databases. In a separate terminal run:

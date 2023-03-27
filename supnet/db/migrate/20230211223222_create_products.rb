@@ -5,6 +5,7 @@ class CreateProducts < ActiveRecord::Migration[7.0]
       t.uuid :vendor_id
       t.string :spec_version
       t.string :preceding_pf_ids, array: true, default: []
+      t.text :preceding_pf_urls, array: true, default: []
       t.string :scopes_included, array: true, default: []
       t.integer :version
       t.datetime :created
