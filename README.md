@@ -2,17 +2,21 @@
 
 ## Intro
 
-PCFer is a reference app to handle supply-chain PCF requests in an automated, machine-readable way, created by RMI's [Climate Intelligence Program](https://rmi.org/our-work/climate-intelligence/). It lets you both create digital PCF files to send to customers, and to receive them from vendors.
+PCFer is a reference application to allow the exchange of Product Carbon Footprints (PCFs) in an automated, machine-readable way. It lets you both create digital PCF files to send to customers, and to receive them from vendors.
 
-It uses the [PACT format for product-level greenhouse gas emissions](https://wbcsd.github.io/data-exchange-protocol/v2/), created by the WBCSD's [Pathfinder Network](https://www.wbcsd.org/Programs/Climate-and-Energy/Climate/SOS-1.5/Resources/Pathfinder-Framework-Guidance-for-the-Accounting-and-Exchange-of-Product-Life-Cycle-Emissions) with input from [RMI](https://rmi.org).
+Importantly, PCFs can be exchanged between this app, and any other application or system that supports the open-source [PACT standard](https://wbcsd.github.io/data-exchange-protocol/v2/). Because it uses a standard and open format for emissions data, and exchanges it over HTTP, neither sender nor receiver needs to know details of the system on the other side, other than that it supports the same format. 
 
-This basic app is for generic supply chain products, later versions will support fields specific to particular products, such as steel, based on the [steel accounting guidance](https://github.com/rmi/steel-guidance) created by RMI.
+This basic app is for generic supply chain products and is not intended for production use in its current form, so caveat emptor. Later versions will support fields specific to particular products, such as steel, based on RMI's [steel accounting guidance](https://github.com/rmi/steel-guidance). Both this application and the steel accounting guidance are products of RMI's [Climate Intelligence Program](https://rmi.org/our-work/climate-intelligence/).
+<br />
+<br />
 
 ![ScreenShot](supnet_screenshot.png)
 
+<br />
+
 ## Running it
 
-This repo runs four containers, two postgres DBs, and two rails app--independed apps running the same code base, built and launched by docker-compose.yml. This is to allow demonstration of PACT-format files being shared between buyer and seller, if you simply want to run your own instance of the app, you can run the Dockerfile by itself. To run the whole thing:
+To demonstrate data exchange and traceability this repo creates four containers, two postgres DBs, and two rails app--independed apps running the same code base, built and launched by docker-compose.yml. If you just want to run your own instance of the app you can user the Dockerfile by itself. To run the whole thing:
 
 1. Install Docker
 
@@ -83,12 +87,9 @@ Once set up, you can run `docker compose up` any time you want to start the app+
 buyer's db port is 6544, seller's is 6543 (mapped in both cases to the standard postgresql on the container side)
 
 ## CURL
-To send PCF data via command line. The API key should be the one supplied by the Vendor.
+You can use `curl` send PCF data via command line, illustrating the point that data can be sent and received however you want. The API key should be the one supplied by the Vendor.
 
 `curl -v -H 'Content-Type: application/json' -H 'X-API-Key: sk_J8HcZp4OJxS3Rq4EdwVGdg' -d "@test_pact.json" -X POST http://localhost:3000/products.json`
-
-## Using in other environments
-This is not production software, and per the license is provide as-is with no warranty. If you want to set up a single instance of the app without the databases, use the Dockerfile by itself and either edit docker-compose.yml, or deploy the app container by other means.
 
 ## Sources
 
