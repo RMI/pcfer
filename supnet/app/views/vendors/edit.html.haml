@@ -1,9 +1,6 @@
 = render "shared/vendor_nav"
 
-%h1 Editing vendor
+%h1
+  Editing #{link_to @vendor.name, @vendor}
 
 = render 'form'
-
-= link_to 'Show', @vendor
-\|
-= link_to 'Back', vendors_path

@@ -4,9 +4,6 @@
 :javascript
   function toggle(className){
     var elements = document.getElementsByClassName(className)
-
-    console.log("elements: "+elements.length);
-
     for (var i = 0; i < elements.length; i++){
         console.log("element "+ i +": "+elements[i]);
         $(elements[i]).fadeToggle();
@@ -30,7 +27,8 @@
 
   .form-group.optional
     = form.label :preceding_pf_ids, "Preceding PFCs"
-    = form.select :preceding_pf_ids, options_for_select( Product.all.map{|p| [p.product_name_company, p.id] }, @product.preceding_pf_ids), {include_hidden: false}, {multiple: true, include_blank: false, class: "form-select"}
+    - products_hash = Product.all.map{|p| [p.product_name_company, p.id] unless p.id == @product.id }
+    = form.select :preceding_pf_ids, options_for_select( products_hash, @product.preceding_pf_ids), {include_hidden: false}, {multiple: true, include_blank: false, class: "form-select"}
 
   .form-group.optional
     = form.label :scopes_included, "Scopes included"

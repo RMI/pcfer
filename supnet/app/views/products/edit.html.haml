@@ -1,6 +1,6 @@
 = render "shared/product_nav"
 
-%h1 Editing #{link_to "PCF", products_path}
+%h1 Editing #{link_to @product.product_name_company, @product}
 %br/
 
 = render "form", product: @product

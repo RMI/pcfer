@@ -1,7 +1,8 @@
 = render "shared/customers_nav"
 
-%h1 Editing customer
+%h1
+  Editing #{link_to @customer.name, @customer}
 
 = render 'form'
 
-= link_to 'Show', @customer
+%br/
