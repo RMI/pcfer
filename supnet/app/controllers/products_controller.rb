@@ -13,19 +13,8 @@ class ProductsController < ApplicationController
       @whose = "Your"
       Product.yours
     when params[:received]
-
       @whose = "Received"
       Product.received
-
-      @parent_products = []
-      @child_products = []
-      Product.received.each do |pr|
-        if pr.preceding_pf_ids.present?
-          @parent_products << pr
-        else
-          @child_products << pr
-        end
-      end
     else
       Product.all
     end
@@ -167,21 +156,24 @@ class ProductsController < ApplicationController
         }
 
         format.json {
-        # parent_id is initially set to the parent_id from the sending system,
-        # and is just used to re-connect the child to the parent on the
-        # receiving end. So use it to get the parent, then store the relationship
-        # in preceding_pf_ids, and clear parent_id. It's transient and just for
-        # transfer
-        if parent_product = Product.find_by_original_id( @product.parent_id )
-          unless parent_product.preceding_pf_ids == @product.id
-            parent_product.preceding_pf_ids << @product.id
-            parent_product.save
-          end
-        end
+          # parent_id is initially set to the parent_id from the sending system,
+          # and is just used to re-connect the child to the parent on the
+          # receiving end. So use it to get the parent, then store the relationship
+          # in preceding_pf_ids, and clear parent_id. It's transient and just for
+          # transfer
 
-        @product.parent_id = nil
-        @product.save
-          render :show, status: :created, location: @produc
+          # dangerous hack, but if you sort these by date it would probably work
+          if parent_product = Product.where( ["original_id = ?", @product.parent_id] ).order("created_at DESC").first
+            logger.debug "================> fixing parent_product: #{parent_product.id}"
+            # unless parent_product.preceding_pf_ids == @product.id
+              parent_product.preceding_pf_ids << @product.id
+              parent_product.save
+            # end
+          end
+
+          @product.parent_id = nil
+          @product.save
+          render :show, status: :created
         }
       else
         format.html { render :new, status: :unprocessable_entity }

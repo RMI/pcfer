@@ -6,7 +6,11 @@ class Product < ApplicationRecord
 
   scope :yours, -> { where("vendor_id IS NULL") }
   scope :received, -> { where("vendor_id IS NOT NULL") }
+  scope :parents, -> { where.not(preceding_pf_ids: []) }
+
   scope :active, -> { where("status = 'Active'")}
+
+  # scope :comments, where("text_value <> ''")
 
   attribute :version, :integer, default: "1"
 

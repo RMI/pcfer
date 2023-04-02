@@ -8,18 +8,19 @@
   -#   = link_to "Upload CSV", new_product_path, class: "btn btn-primary"
 
 %table{id: "products", class: "table table-hover"}
-  - @parent_products.each do |product|
-    %tr
-      %td
-        #{link_to product.company_and_product_name, product_path(product)},
-        #{product.created_at.to_fs(:long_ordinal)}
-
-        - if product.vendor.present?
-          from #{link_to product.vendor.name, product.vendor},
-
+  - @products.each do |product|
     - if product.preceding_pf_ids.present?
-      - product.preceding_pf_ids.each do |ppid|
-        - prod = Product.find(ppid)
-        %tr
-          %td
-            &nbsp;&nbsp;&nbsp;&nbsp; #{link_to prod.company_and_product_name, prod}
+      %tr
+        %td
+          #{link_to product.company_and_product_name, product_path(product)},
+          #{product.created_at.to_fs(:long_ordinal)}
+
+          - if product.vendor.present?
+            from #{link_to product.vendor.name, product.vendor},
+
+      - if product.preceding_pf_ids.present?
+        - product.preceding_pf_ids.each do |ppid|
+          - prod = Product.find(ppid)
+          %tr
+            %td
+              &nbsp;&nbsp;&nbsp;&nbsp; #{link_to prod.company_and_product_name, prod}
