@@ -25,6 +25,14 @@
     Spec version 2.0.0 |
     =link_to "show/hide required", "#", onclick: "toggle('optional');"
 
+  -# This will need to handle nesting, for anything more than one level deep
+  -# it's going to be hard to discern what's a precedent of a precedent. Perhaps
+  -# it can just exclude anything that's already included in another PCF's
+  -# precedents?
+
+  -# Also this field needs to be moved to the extension, it's being used
+  -# incorrectly here (it's supposed to list deprecated pcfs that the new one
+  -# is meant to replace)
   .form-group.optional
     = form.label :preceding_pf_ids, "Preceding PFCs"
     - products_hash = Product.all.map{|p| [p.product_name_company, p.id] unless p.id == @product.id }

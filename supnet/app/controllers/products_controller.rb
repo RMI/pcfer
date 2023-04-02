@@ -13,8 +13,19 @@ class ProductsController < ApplicationController
       @whose = "Your"
       Product.yours
     when params[:received]
+
       @whose = "Received"
       Product.received
+
+      @parent_products = []
+      @child_products = []
+      Product.received.each do |pr|
+        if pr.preceding_pf_ids.present?
+          @parent_products << pr
+        else
+          @child_products << pr
+        end
+      end
     else
       Product.all
     end
@@ -35,54 +46,10 @@ class ProductsController < ApplicationController
   end
 
   def send_pcf
-    logger.debug "--------> INSIDE product controller, about to call product.send_pcf"
     respond_to do |format|
       format.html { render :show }
       format.json do
-        logger.debug "--------> inside json block"
         @product.send_pcf(params[:customer_id])
-      end
-    end
-  end
-
-# curl -v -H 'Content-Type: application/json' -H 'X-API-Key: sk_vWIf7mo6G9Y6iZ5hycbf1w'
-# -X GET http://localhost:3090/products/632a2c64-b459-44af-9f06-6fa606a2995d/rectify.json
-  # This takes the original_id of a recently-sent pcf, and fixes the preceeding pcf ids
-  def rectify
-    respond_to do |format|
-      format.html { return 204 }
-      format.json do
-        # Validate the API key, return if you can't
-        if request.headers.include?("X-API-Key")
-          # Get the vendor by unique API key
-          if vendors = Vendor.where("api_key = ?", request.headers["X-API-Key"])
-            @vendor = vendors.first
-          else
-            logger.debug "could not find vendor"
-            return 401
-          end
-        else
-          logger.debug "Missing API key for POSTED PCF info"
-          return 401
-        end
-
-        # 0. get the id/original_id, and its preceding_id's, to a rectification method
-        # 1. search on the other side for a product with an original_id that matches
-        product_to_rectify = Product.where("original_id=?", params[:id]).first
-        logger.debug "--------> got product_to_rectify: #{product_to_rectify.product_name_company}"
-
-        @new_preceeding_ids = []
-        if product_to_rectify.preceding_pf_ids.present?
-          logger.debug "-------> there are products to rectify"
-          product_to_rectify.preceding_pf_ids.each do |pid|
-            p = Product.where("original_id=?", pid).first
-            logger.debug "-------> got new product, original id was #{pid}, id is #{p.id}"
-            @new_preceeding_ids << p.id
-          end
-        end
-        logger.debug "---------> @new_preceeding_ids: #{@new_preceeding_ids.inspect}"
-        product_to_rectify.preceding_pf_ids = @new_preceeding_ids
-        product_to_rectify.save
       end
     end
   end
@@ -100,6 +67,17 @@ class ProductsController < ApplicationController
     @title = "Edit PCF"
   end
 
+  # set original_id on the sending side, bc that's where it's known
+  # keep parent_id the same when sending, then set RE-set the parent_id on the receiving side
+  # then on receiving side:
+  # - if there's a parent_id from the sender, get the parent product on the receiving end
+  #   using find_by_original_id( parent_id )
+  # - reset parent_id on the receiving end to the value returned by find_by_original_id
+  # -
+  # QUESTION: does the existence of parent_id negate the need for preceeding_pfid? That would
+  # actually be good since preceeding_pfid has another meaning in the pact docs.
+  # Actually it's needed for the form, but might want to move that to something in
+  # the traceabilityi extension, so we're not misusing that.
   # POST /products or /products.json
   def create
     respond_to do |format|
@@ -136,9 +114,6 @@ class ProductsController < ApplicationController
             pcf_params = param[1]{}
             pcf_params.each do |pcf_param|
 
-              # I think we may have to deal with fields that are stored as JSON strings
-              # differently, like pcf_cross_sectoral_standards_used and pcf_product_or_sector_specific_rules
-
               # deal with dqi
               if pcf_param[0] == "dqi"
                 dqi_params = pcf_param[1]
@@ -167,35 +142,21 @@ class ProductsController < ApplicationController
             # for the created/updated fields for that, refer to the 'created'
             # and 'updated' fields.
             unless param[0] == 'vendor_id' || param[0] == 'product' ||
-              param[0] == 'created_at' || param[0] == 'updated_at'
+              param[0] == 'created_at' || param[0] == 'updated_at' ||
+              param[0] == 'preceding_pf_ids'
               @product.public_send("#{param[0]}=", param[1])
             end
+
           end
         end
-
-        # I think every time you add a new PCF, you're going to have to rectify
-        # the fact that the preceding_pf_ids it received are referring to the
-        # ids from the sending system, and they need to get converted to the ids
-        # of the receiving system. Flow:
-        # Save everything, per above. preceding_pf_ids are wrong.
-        # iterate through the current, wrong preceding_pf_ids, comparing each
-        # to the original_id
-
-        # iterate preceding ids
-          # search for matching original_ids
-          # swap the old, wrong preceding id for the current id
-
       } # end format.json block
     end
 
     respond_to do |format|
-      if @product.save
-        # if pcf is being sent via API and has has no created timestamp, give it
-        # one. If it has one one, keep it--but Rails will fill in created_at
-        # with the time it was added to the receiving system. Needs to be done
-        # after product is saved once, so that created_at is populated.
 
-        logger.debug "---------> about to fill created"
+      if @product.save
+
+        # 'created_at' is an auto Rails field. PACT specifies 'created', so fill
         if @product.created.blank?
           @product.created = @product.created_at
           @product.save
@@ -204,14 +165,24 @@ class ProductsController < ApplicationController
         format.html {
           redirect_to product_url(@product), notice: "Product successfully created."
         }
+
         format.json {
+        # parent_id is initially set to the parent_id from the sending system,
+        # and is just used to re-connect the child to the parent on the
+        # receiving end. So use it to get the parent, then store the relationship
+        # in preceding_pf_ids, and clear parent_id. It's transient and just for
+        # transfer
+        if parent_product = Product.find_by_original_id( @product.parent_id )
+          unless parent_product.preceding_pf_ids == @product.id
+            parent_product.preceding_pf_ids << @product.id
+            parent_product.save
+          end
+        end
 
-          # if request.headers.include?("X-Preceeding")
-          #   # get pcf where the original id of this pcf is in its preceding_pf_ids array
-          # end
-
-          logger.debug "---------> about to render product. why is location the product?"
-          render :show, status: :created, location: @product }
+        @product.parent_id = nil
+        @product.save
+          render :show, status: :created, location: @produc
+        }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @product.errors, status: :unprocessable_entity }
@@ -253,7 +224,9 @@ class ProductsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def product_params
       params.require(:product).permit(
-        :original_id, :vendor_id, :spec_version, :version,
+        :original_id, # if received, ID on previous system
+        :parent_id, # parent ID on *this* system
+        :vendor_id, :spec_version, :version,
         :created, :updated, :status, :status_comment,
         :validity_period_start, :validity_period_end,
         :company_name, :company_ids, :product_description,
@@ -288,8 +261,7 @@ class ProductsController < ApplicationController
         pcf_cross_sectoral_standards_used: [],
         pcf_product_or_sector_specific_rules: [],
         scopes_included: [],
-        preceding_pf_ids: [],
-        preceding_pf_urls: []
+        preceding_pf_ids: []
       )
     end
 end

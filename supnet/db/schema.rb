@@ -27,10 +27,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_18_182549) do
 
   create_table "products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "original_id"
+    t.string "parent_id"
     t.uuid "vendor_id"
     t.string "spec_version"
     t.string "preceding_pf_ids", default: [], array: true
-    t.text "preceding_pf_urls", default: [], array: true
     t.string "scopes_included", default: [], array: true
     t.integer "version"
     t.datetime "created"

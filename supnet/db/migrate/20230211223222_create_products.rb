@@ -1,12 +1,12 @@
 class CreateProducts < ActiveRecord::Migration[7.0]
   def change
     create_table :products, id: :uuid do |t|
-      t.string :original_id
-      t.uuid :vendor_id
+      t.string :original_id # non-pact
+      t.string :parent_id # non-pact
+      t.uuid :vendor_id # non-pact
       t.string :spec_version
       t.string :preceding_pf_ids, array: true, default: []
-      t.text :preceding_pf_urls, array: true, default: []
-      t.string :scopes_included, array: true, default: []
+      t.string :scopes_included, array: true, default: [] # non-pact
       t.integer :version
       t.datetime :created
       t.datetime :updated

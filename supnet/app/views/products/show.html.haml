@@ -24,9 +24,16 @@
     PCFs rolling up into this one:
     %ul
       -# HACK. using originally ids doesn't really work
+      -# This should be getting preceeding id's by parent_id... though it
+      -# should actually be an array held in the parent, bc a PCF sent
+      -# along could be a child of multiple subsequent PCFs :-|
+
+      -# or maybe preceeding_pf_ids can be used (for now?) on the sending side,
+      -# but parent_id is ok on the receiving side?
       - @product.preceding_pf_ids.each do |pcfid|
-        %li
-          - if product = Product.find_by_original_id(pcfid)
+        -# - if suppress(Exception) { product = Product.find(pcfid) }
+        - if product = Product.find(pcfid)
+          %li
             = link_to product.product_name_company, product_path(product)
 
 - if @product.vendor_id.blank? # means it's a PCF you created, rather than one you received
